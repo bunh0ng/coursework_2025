@@ -1,0 +1,121 @@
+employee_id,first_name,last_name,position,hire_date
+1,Megan,Robinson,Sales Manager,2017-11-02
+2,Andrew,Smith,Sales Representative,2017-01-29
+3,Theresa,Maldonado,Account Manager,2018-03-04
+4,Stacey,Carpenter,Logistics,2021-02-23
+5,Joseph,Jones,Logistics,2021-06-13
+6,John,Merritt,Customer Service,2016-02-25
+7,Tonya,Elliott,Customer Service,2018-07-10
+8,Hannah,Ward,Sales Manager,2016-12-27
+9,Leslie,Wiggins,Customer Service,2018-04-02
+10,Natalie,Morris,Customer Service,2019-04-26
+11,Judy,Humphrey,Sales Manager,2024-06-03
+12,Eric,Ortiz,Logistics,2023-02-13
+13,Kelly,Anderson,Warehouse Manager,2021-01-04
+14,Dominic,Campbell,Sales Manager,2020-06-11
+15,Michelle,Pugh,Warehouse Manager,2016-04-28
+16,David,Gutierrez,Warehouse Manager,2015-12-23
+17,Angela,Malone,Account Manager,2015-10-14
+18,Laura,Smith,Customer Service,2023-08-18
+19,Colin,Baldwin,Logistics,2018-07-19
+20,Briana,Munoz,Sales Representative,2020-01-03
+21,Stephanie,Watson,Customer Service,2018-04-13
+22,Mario,Myers,Account Manager,2021-12-07
+23,Stephen,Pope,Sales Representative,2018-04-25
+24,Sara,Brooks,Customer Service,2022-10-27
+25,Michael,French,Customer Service,2023-10-16
+26,Anthony,Sanders,Sales Manager,2020-04-11
+27,Melissa,Warren,Sales Manager,2020-03-01
+28,Mike,Saunders,Warehouse Manager,2022-05-21
+29,David,Williams,Customer Service,2022-09-26
+30,Richard,Smith,Warehouse Manager,2024-12-21
+31,Susan,Romero,Account Manager,2022-07-14
+32,Elizabeth,Roberts,Account Manager,2021-04-11
+33,Lori,Collier,Sales Manager,2022-11-10
+34,Carl,Anderson,Sales Manager,2023-04-15
+35,Shelby,Hawkins,Sales Representative,2021-06-07
+36,Jamie,Ray,Account Manager,2017-09-27
+37,Jessica,Leonard,Sales Manager,2019-12-27
+38,Jacob,Hardy,Account Manager,2024-09-14
+39,Katherine,Barber,Customer Service,2020-08-01
+40,Monique,Johnson,Warehouse Manager,2024-03-12
+41,Kerry,Travis,Sales Manager,2022-01-04
+42,Nicholas,Hopkins,Account Manager,2016-04-27
+43,Ann,Martinez,Logistics,2015-06-10
+44,Lauren,Gonzalez,Warehouse Manager,2017-02-04
+45,Jeff,Simmons,Sales Manager,2019-07-06
+46,Jennifer,Griffith,Sales Manager,2021-02-08
+47,Alyssa,Gonzalez,Sales Manager,2015-06-25
+48,Nicholas,Davis,Customer Service,2016-02-15
+49,John,Bradley,Warehouse Manager,2017-09-16
+50,Eric,Park,Logistics,2022-04-23
+51,Casey,Lewis,Warehouse Manager,2021-09-24
+52,Katrina,Lara,Sales Representative,2018-11-18
+53,Ronald,Kennedy,Logistics,2019-12-14
+54,Heather,Marsh,Account Manager,2024-12-03
+55,William,Fields,Customer Service,2024-07-18
+56,John,Arias,Customer Service,2024-06-30
+57,Rebecca,Carr,Logistics,2019-01-19
+58,Isaac,West,Customer Service,2022-06-03
+59,Jennifer,Reeves,Account Manager,2024-03-28
+60,Lisa,Pollard,Sales Manager,2015-11-09
+61,Elaine,Johnson,Account Manager,2016-03-20
+62,Sherri,Jackson,Sales Representative,2025-02-01
+63,Charles,Ortiz,Account Manager,2022-09-06
+64,Brittany,Walker,Account Manager,2015-08-29
+65,Monica,Campbell,Account Manager,2019-01-27
+66,Mark,Maldonado,Sales Manager,2024-02-29
+67,Angel,Sanchez,Warehouse Manager,2023-04-02
+68,Jessica,Nelson,Customer Service,2024-04-05
+69,Thomas,Smith,Customer Service,2019-08-02
+70,Jamie,Murray,Account Manager,2016-09-11
+71,Zachary,Thomas,Warehouse Manager,2019-06-15
+72,Mary,Harvey,Warehouse Manager,2016-09-25
+73,Kathy,Wu,Account Manager,2023-08-25
+74,Nicole,Mckenzie,Customer Service,2015-05-23
+75,Gwendolyn,Reyes,Logistics,2022-10-25
+76,Gary,Nelson,Customer Service,2018-03-05
+77,Brittany,Wilson,Account Manager,2024-04-23
+78,Ashley,Thompson,Sales Representative,2023-02-02
+79,Natalie,Collins,Warehouse Manager,2023-04-24
+80,Jeffrey,Franklin,Sales Manager,2018-05-28
+81,Elizabeth,Kim,Warehouse Manager,2018-05-26
+82,Kara,Snyder,Customer Service,2024-10-19
+83,Jessica,Anthony,Account Manager,2024-10-03
+84,Patrick,Adams,Logistics,2025-01-14
+85,Lindsey,Moody,Account Manager,2024-11-05
+86,Dawn,Norman,Customer Service,2019-11-24
+87,Tammy,Moore,Sales Manager,2023-11-17
+88,Stacy,Case,Customer Service,2024-05-13
+89,Shelby,Hoover,Sales Representative,2025-02-05
+90,Gloria,Mccarty,Account Manager,2022-10-10
+91,Mark,Krueger,Sales Representative,2025-02-12
+92,Jeffrey,Phelps,Warehouse Manager,2019-02-05
+93,Nicole,Hughes,Account Manager,2024-03-06
+94,Michele,Gonzalez,Warehouse Manager,2019-02-24
+95,Adrienne,Sims,Account Manager,2023-12-02
+96,Jeffrey,Smith,Customer Service,2022-07-21
+97,Tiffany,Camacho,Logistics,2024-01-01
+98,Eric,Vazquez,Account Manager,2021-04-18
+99,John,Lopez,Logistics,2025-01-04
+100,Cynthia,Kaufman,Sales Representative,2015-06-26
+101,Todd,Wilson,Customer Service,2025-01-18
+102,Kenneth,Pearson,Sales Representative,2019-06-26
+103,Lisa,Ross,Warehouse Manager,2024-05-10
+104,Catherine,Diaz,Account Manager,2024-01-15
+105,Joseph,Heath,Warehouse Manager,2016-11-12
+106,Jenny,Gray,Logistics,2016-05-31
+107,Sandra,Rodriguez,Customer Service,2016-05-30
+108,Michael,Evans,Logistics,2021-07-18
+109,Amy,Perry,Sales Representative,2024-08-14
+110,Bradley,Garcia,Warehouse Manager,2024-10-10
+111,Amy,Romero,Sales Representative,2017-04-07
+112,Michelle,Jackson,Sales Representative,2019-10-06
+113,Curtis,Stone,Logistics,2020-01-01
+114,Rhonda,Jones,Logistics,2019-10-07
+115,Jason,Mills,Sales Representative,2023-07-24
+116,Michael,Stanley,Customer Service,2018-04-18
+117,Justin,Alvarez,Customer Service,2022-06-26
+118,Jonathan,Freeman,Customer Service,2015-05-22
+119,Diane,Davis,Sales Manager,2019-07-29
+120,Nicholas,Ramos,Warehouse Manager,2016-06-08
