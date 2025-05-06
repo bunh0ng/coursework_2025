@@ -3,48 +3,64 @@ from telebot import types
 import database
 from config import bot_settings
 from format_table_ascii import format_table_ascii
+import os
+
 
 bot = telebot.TeleBot(bot_settings['Token'])
 
-default_markup = types.ReplyKeyboardMarkup(resize_keyboard=True).row('Добавить запись', 'Удалить запись', 'Какие детали пополнить')
+default_markup = types.ReplyKeyboardMarkup(resize_keyboard=True).row('Добавить запись', 'Удалить запись', 'Посмотреть накладные за период').row('Самые активные покупатели', 'Самые продаваемые детали', 'Самые ценные сотрудники').row('Самые активные поставщики', 'Какие детали пополнить')
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
+    with open("hello.txt", "r", encoding='utf-8') as f:
+            bot.send_message(message.chat.id, f.read())
     bot.send_message(message.chat.id, 'Выберите действие:', reply_markup=default_markup)
+
+@bot.message_handler(commands=['documents'])
+def handle_docs(message):
+    bot.send_message(message.chat.id, 'Скоро здесь будут документы :)', reply_markup=default_markup)
 
 user_state = {}
 
 @bot.message_handler(func=lambda msg: msg.text == 'Добавить запись')
 def handle_add_record(message):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.row('Накладная', 'Строка накладной', 'Поставщик', 'Покупатель')
-    markup.row('Деталь', 'Тип детали', 'Сотрудник')
-    bot.send_message(message.chat.id, 'В какую таблицу добавить запись?', reply_markup=markup)
-    user_state[message.chat.id] = {'action': 'add'}
+    try:
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        markup.row('Накладная', 'Строка накладной', 'Поставщик', 'Покупатель')
+        markup.row('Деталь', 'Тип детали', 'Сотрудник')
+        bot.send_message(message.chat.id, 'В какую таблицу добавить запись?', reply_markup=markup)
+        user_state[message.chat.id] = {'action': 'add'}
+    except Exception as e:
+        bot.send_message(message.chat.id, f'Ошибка при добавлении:\n{e}', reply_markup=default_markup)
 
 @bot.message_handler(func=lambda msg: msg.text == 'Удалить запись')
 def handle_add_record(message):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.row('Накладная', 'Строка накладной', 'Поставщик', 'Покупатель')
-    markup.row('Деталь', 'Тип детали', 'Сотрудник')
-    bot.send_message(message.chat.id, 'Из какой таблицы удалить запись?', reply_markup=markup)
-    user_state[message.chat.id] = {'action': 'delete'}
+    try:
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        markup.row('Накладная', 'Строка накладной', 'Поставщик', 'Покупатель')
+        markup.row('Деталь', 'Тип детали', 'Сотрудник')
+        bot.send_message(message.chat.id, 'Из какой таблицы удалить запись?', reply_markup=markup)
+        user_state[message.chat.id] = {'action': 'delete'}
+    except Exception as e:
+            bot.send_message(message.chat.id, f'Ошибка при добавлении:\n{e}', reply_markup=default_markup)
 
 @bot.message_handler(func=lambda msg: msg.text in ['Накладная', 'Строка накладной', 'Поставщик', 'Покупатель', 'Деталь', 'Тип детали', 'Сотрудник'])
 def handle_table_selection(message):
-    state = user_state.get(message.chat.id)
-    if state and state['action'] == 'delete':
-        user_state[message.chat.id]['table'] = message.text
-        bot.send_message(message.chat.id, f'Введите ID записи, которую нужно удалить из таблицы «{message.text}»', reply_markup=types.ReplyKeyboardRemove())
-    elif state and state['action'] == 'add':
-        user_state[message.chat.id]['table'] = message.text
-        bot.send_message(message.chat.id, f'Введите данные для таблицы «{message.text}» через запятую без пробелов', reply_markup=types.ReplyKeyboardRemove())
+    try:
+        state = user_state.get(message.chat.id)
+        if state and state['action'] == 'delete':
+            user_state[message.chat.id]['table'] = message.text
+            bot.send_message(message.chat.id, f'Введите ID записи, которую нужно удалить из таблицы "{message.text}"', reply_markup=types.ReplyKeyboardRemove())
+        elif state and state['action'] == 'add':
+            user_state[message.chat.id]['table'] = message.text
+            bot.send_message(message.chat.id, f'Введите данные для таблицы "{message.text}" через запятую без пробелов', reply_markup=types.ReplyKeyboardRemove())
+    except Exception as e:
+        bot.send_message(message.chat.id, f'Ошибка при добавлении:\n{e}', reply_markup=default_markup)
 
 @bot.message_handler(func=lambda msg: msg.chat.id in user_state and user_state[msg.chat.id]['action'] == 'add' and 'table' in user_state[msg.chat.id])
 def handle_data_input(message):
     user_id = message.from_user.id
     table = user_state[user_id]['table']
-    print(table, message.text)
     try:
         if table == 'Накладная':
             database.insert_into_invoice(message.text)
@@ -62,12 +78,13 @@ def handle_data_input(message):
             database.insert_into_employee(message.text)
         bot.send_message(message.chat.id, f'Запись добавлена в таблицу "{table}"', reply_markup=default_markup)
     except Exception as e:
-        bot.send_message(message.chat.id, f'Ошибка при добавлении:\n {e}', reply_markup=default_markup)
+        bot.send_message(message.chat.id, f'Ошибка при добавлении:\n{e}', reply_markup=default_markup)
     finally:
         del user_state[user_id]
 
 @bot.message_handler(func=lambda msg: msg.chat.id in user_state and user_state[msg.chat.id]['action'] == 'delete' and 'table' in user_state[msg.chat.id])
 def handle_delete_data(message):
+    user_id = message.from_user.id
     try:
         table = user_state[message.chat.id]['table']
         record_id = int(message.text)
@@ -86,21 +103,81 @@ def handle_delete_data(message):
         elif table == 'Сотрудник':
             table = 'Employee'
         database.delete_from_database(table, record_id)
-        bot.send_message(message.chat.id, f'Запись с ID {record_id} удалена из таблицы «{table}».', reply_markup=default_markup)
+        bot.send_message(message.chat.id, f'Запись с ID {record_id} удалена из таблицы "{table}".', reply_markup=default_markup)
     except Exception as e:
-        bot.send_message(message.chat.id, f'Ошибка при удалении:\n {e}', reply_markup=default_markup)
+        bot.send_message(message.chat.id, f'Ошибка при удалении:\n{e}', reply_markup=default_markup)
     finally:
-        user_state.pop(message.chat.id, None)
+        del user_state[user_id]
 
+@bot.message_handler(func=lambda msg: msg.text == 'Посмотреть накладные за период')
+def handle_ask_period(message):
+    try:
+        bot.send_message(message.chat.id, 'Введите период, за который хотите посмотреть накладные в формате "ГГГГ-ММ-ДД,ГГГГ-ММ-ДД"', reply_markup=types.ReplyKeyboardRemove())
+        user_state[message.chat.id] = {'action': 'watch'}
+    except Exception as e:
+        bot.send_message(message.chat.id, f'Ошибка при добавлении:\n{e}', reply_markup=default_markup)
+
+@bot.message_handler(func=lambda msg: msg.chat.id in user_state and user_state[msg.chat.id]['action'] == 'watch')
+def handle_show_invoices(message):
+    user_id = message.from_user.id
+    try:
+        clonames, rows = database.invoices_for_period(message.text)
+        table = format_table_ascii(clonames, rows)
+        with open(f'{message.text}.txt', 'w', encoding='utf-8') as f:
+            f.write(table)
+        with open(f'{message.text}.txt', 'rb') as f:
+            bot.send_document(message.chat.id, f, reply_markup=default_markup)
+        os.remove(f'{message.text}.txt')
+        print(f'{message.from_user.username} посмотрел накладные с {message.text.replace(',', ' по ')}')
+    except Exception as e:
+        bot.send_message(message.chat.id, f'Ошибка при просмотре:\n{e}', reply_markup=default_markup)
+    finally:
+        del user_state[user_id]
 
 @bot.message_handler(func=lambda msg: msg.text == 'Какие детали пополнить')
-def check_fill(message):
-    clonames, rows = database.check_fill()
-    table = format_table_ascii(clonames, rows)
-    bot.send_message(message.chat.id, f"<pre>{table}</pre>", parse_mode="HTML", reply_markup=default_markup)
+def handle_check_fill(message):
+    try:
+        clonames, rows = database.check_fill()
+        table = format_table_ascii(clonames, rows)
+        bot.send_message(message.chat.id, f"<pre>{table}</pre>", parse_mode="HTML", reply_markup=default_markup)
+    except Exception as e:
+        bot.send_message(message.chat.id, f'Ошибка при добавлении:\n{e}', reply_markup=default_markup)
 
+@bot.message_handler(func=lambda msg: msg.text == 'Самые активные покупатели')
+def handle_mv_customers(message):
+    try:
+        clonames, rows = database.most_valuable_customers()
+        table = format_table_ascii(clonames, rows)
+        bot.send_message(message.chat.id, f"<pre>{table}</pre>", parse_mode="HTML", reply_markup=default_markup)
+    except Exception as e:
+        bot.send_message(message.chat.id, f'Ошибка при добавлении:\n{e}', reply_markup=default_markup)
 
+@bot.message_handler(func=lambda msg: msg.text == 'Самые продаваемые детали')
+def handle_ms_parts(message):
+    try:
+        clonames, rows = database.most_sold_parts()
+        table = format_table_ascii(clonames, rows)
+        bot.send_message(message.chat.id, f"<pre>{table}</pre>", parse_mode="HTML", reply_markup=default_markup)
+    except Exception as e:
+        bot.send_message(message.chat.id, f'Ошибка при добавлении:\n{e}', reply_markup=default_markup)
 
+@bot.message_handler(func=lambda msg: msg.text == 'Самые ценные сотрудники')
+def handle_mv_employees(message):
+    try:
+        clonames, rows = database.most_valuable_employee()
+        table = format_table_ascii(clonames, rows)
+        bot.send_message(message.chat.id, f"<pre>{table}</pre>", parse_mode="HTML", reply_markup=default_markup)
+    except Exception as e:
+        bot.send_message(message.chat.id, f'Ошибка при добавлении:\n{e}', reply_markup=default_markup)
+
+@bot.message_handler(func=lambda msg: msg.text == 'Самые активные поставщики')
+def handle_ma_suppliers(message):
+    try:
+        clonames, rows = database.most_active_suppliers()
+        table = format_table_ascii(clonames, rows)
+        bot.send_message(message.chat.id, f"<pre>{table}</pre>", parse_mode="HTML", reply_markup=default_markup)
+    except Exception as e:
+        bot.send_message(message.chat.id, f'Ошибка при добавлении:\n{e}', reply_markup=default_markup)
 
 print('Бот запущен')
 bot.polling(none_stop=True)
