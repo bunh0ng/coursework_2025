@@ -221,6 +221,30 @@ def most_active_suppliers():
     conn.close()
     return colnames, rows
 
+def most_useless_employees():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT 
+            employee_id AS id_сотрудника,
+            (SELECT second_name || ' ' || first_name || ' ' || last_name FROM Employee e WHERE e.employee_id = i.employee_id) AS полное_имя,
+            COUNT(*) AS число_накладных
+        FROM Invoice i
+        WHERE invoice_date >= CURRENT_DATE - INTERVAL '1 month'
+        GROUP BY id_сотрудника
+        ORDER BY число_накладных ASC
+        LIMIT 10
+    """)
+    rows = cur.fetchall()
+    colnames = [desc[0] for desc in cur.description]
+    cur.close()
+    conn.close()
+    return colnames, rows
+
+#TODO
+def to_retire_employees():
+    pass
+
 def invoices_for_period(data: str):
     values = data.split(",")
     if len(values) != 2:
