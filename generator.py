@@ -29,7 +29,6 @@ def generate_customers():
             'customer_name': companies[i],
             'city': cities[i],
             'contact_phone': fake.phone_number(),
-            'discount_percent': round(random.uniform(0.0, 0.15), 2),
             'email': f'{companies[i].replace(' ', '').lower()}@{random.choice(mailboxes)}'
         })
     return customers
@@ -39,18 +38,17 @@ def generate_part_types():
     part_types = []
     types = [
     'Вал', 'Шестерня', 'Подшипник', 'Муфта', 
-    'Крышка', 'Болт', 'Гайка', 'Шайба', 'Ось','Звездочка',
-    'Цепь', 'Ролик', 'Сальник', 'Клапан', 'Фильтр',
-    'Патрубок', 'Трубка', 'Штуцер', 'Кронштейн', 'Пластина',
-    'Диск', 'Лента', 'Колодка', 'Рычаг', 'Вилка', 'Решетка'
+    'Крышка', 'Болт', 'Гайка', 'Шайба',
+    'Цепь', 'Ролик', 'Клапан', 'Фильтр',
+    'Трубка', 'Штуцер', 'Пластина',
+    'Диск', 'Лента', 'Рычаг', 'Решетка'
     ]
     adjectives = [
-        'упорн', 'радиальн', 'стопорн', 'переходн', 'соединительн',
-        'защитн', 'крепежн', 'корончат', 'пружинн',
+        'упорн', 'стопорн', 'переходн', 'соединительн',
+        'защитн', 'крепежн', 'пружинн',
         'вращательн', 'клинов','уплотнительн',
-        'армированн', 'обратн', 'маслян', 'быстроразъемн',
-        'регулировочн', 'фрикционн',
-        'вентиляционн', 'дренажн'
+        'армированн', 'обратн',
+        'регулировочн', 'фрикционн'
     ]
     part_functions = [
     'передачи вращательного момента', 'фиксации компонентов', 'уплотнения соединений',
@@ -67,17 +65,19 @@ def generate_part_types():
         'в автомобильных трансмиссиях', 'в авиационных агрегатах', 'в железнодорожной технике',
         'в горнодобывающем оборудовании', 'в судовых механизмах', 'в энергетических установках'
     ]
-    for i in range(0, NUM_PART_TYPES):
+    while len(part_types) < NUM_PART_TYPES:
         type = random.choice(types)
         if m.parse(type)[0].feats['Gender'] == 'Masc':
             ending = 'ый'
         elif m.parse(type)[0].feats['Gender'] == 'Fem':
             ending = 'ая'
-        part_types.append({
-            'parttype_id': i + 1,
-            'type_name': f'{random.choice(types)} {random.choice(adjectives) + ending}',
-            'description': f'Используется для {random.choice(part_functions)} {random.choice(applications)}'
-        })
+        type_name = f'{random.choice(types)} {random.choice(adjectives) + ending}'
+        if type_name not in part_types:
+            part_types.append({
+                'parttype_id': len(part_types) + 1,
+                'type_name': type_name,
+                'description': f'Используется для {random.choice(part_functions)} {random.choice(applications)}'
+            })
     return part_types
 
 # Генерация данных для таблицы Supplier (Поставщики)
@@ -91,7 +91,6 @@ def generate_suppliers():
             'supplier_id': i + 1,
             'supplier_name': suppliers_names[i],
             'contact_phone': fake.phone_number(),
-            'reliability_rating': random.randint(1, 5),
             'email': f'{suppliers_names[i].replace(' ', '').lower()}@{random.choice(mailboxes)}'
         })
     return suppliers
@@ -101,9 +100,9 @@ def generate_parts():
     materials = ['Сталь', 'Чугун', 'Алюминий', 'Медь', 'Латунь', 'Бронза', 'Титан', 'Никель', 'Железо', 'Резина', 'Углепластик', 'Керамика', 'Графит']
     parts = []
     
-    for i in range(0, NUM_PARTS):
+    while len(parts) < NUM_PARTS:
         part = {
-            'part_id': i + 1,
+            'part_id': len(parts) + 1,
             'material': random.choice(materials),
             'weight_kg': round(random.uniform(0.01, 50.0), 3),
             'price_usd': round(random.uniform(0.1, 500.0), 2),
@@ -113,8 +112,7 @@ def generate_parts():
             'min_stock_level': random.randint(5, 50)
         }
         
-        # 10% деталей неактивны
-        if random.random() < 0.1:
+        if part['quantity_in_stock'] < part['min_stock_level']:
             part['is_active'] = False
         else:
             part['is_active'] = True
@@ -128,28 +126,25 @@ def generate_employees():
     employees = []
     
     for i in range(0, NUM_EMPLOYEES):
-        hire_date = fake.date_between(start_date='-10y', end_date='-1d')
         first_names = ['Александр', 'Дмитрий', 'Максим', 'Сергей', 'Андрей', 'Алексей', 'Артем', 'Илья', 'Петр', 'Михаил', 'Геннадий', 'Матвей', 'Роман', 'Егор', 'Арсений', 'Иван', 'Денис', 'Евгений', 'Даниил', 'Павел']
         last_names = ['Александрович', 'Дмитриевич', 'Максимович', 'Сергеевич', 'Андреевич', 'Алексеевич', 'Артемович', 'Ильич', 'Петрович', 'Михаилович', 'Геннадьевич', 'Матвеевич', 'Романович', 'Егорович', 'Арсениевич', 'Иванович', 'Денисович', 'Евгениевич', 'Даниилович', 'Павелович']
+        age = random.randint(18, 65)
         employees.append({
             'employee_id': i + 1,
             'first_name': random.choice(first_names),
             'second_name': fake.last_name_male(),
             'last_name': random.choice(last_names),
             'position': random.choice(positions),
-            'hire_date': hire_date.isoformat(),
-            'age': random.randint(18, 65)
+            'hire_date': fake.date_between(start_date=f'-{(age-18)*365+10}d', end_date='-1d').isoformat(),
+            'age': age
         })
     return employees
 
 # Генерация данных для таблицы Invoice (Накладные)
-def generate_invoices(customers, employees):
-    invoices = []
-    start_date = datetime.now() - timedelta(days=365*3)  
-    
+def generate_invoices():
+    invoices = []    
     for i in range(1, NUM_INVOICES + 1):
-        invoice_date = fake.date_time_between(start_date=start_date, end_date='now')
-        
+        invoice_date = fake.date_time_between(start_date=datetime.now()-timedelta(days=365*5), end_date=datetime.now())
         invoices.append({
             'invoice_id': i,
             'invoice_date': invoice_date.isoformat(),
@@ -157,7 +152,7 @@ def generate_invoices(customers, employees):
             'customer_id': random.randint(1, NUM_CUSTOMERS),
             'employee_id': random.randint(1, NUM_EMPLOYEES),
             'payment_status': random.choices(
-                ['Оплачено', 'Частично оплачено', 'Неоплачено'], 
+                ['Оплачено', 'Частично оплачено', 'Не оплачено'], 
                 weights=[85, 10, 5]
             )[0]
         })
@@ -176,7 +171,7 @@ def generate_invoice_lines(invoices, parts):
         for _ in range(num_lines):
             part = random.choice(active_parts)
             quantity = random.randint(1, 100)
-            unit_price = part['price_usd'] * (1 - random.uniform(0.0, 0.1)) 
+            unit_price = part['price_usd']
             line_total = round(quantity * unit_price, 2)
             
             invoice_lines.append({
@@ -208,7 +203,7 @@ def save_to_csv(data, filename, fieldnames):
 def main():
     print('Generating customers...')
     customers = generate_customers()
-    save_to_csv(customers, 'tables/customers.csv', ['customer_id', 'customer_name', 'city', 'contact_phone', 'discount_percent', 'email'])
+    save_to_csv(customers, 'tables/customers.csv', ['customer_id', 'customer_name', 'city', 'contact_phone', 'email'])
 
     print('Generating part types...')
     part_types = generate_part_types()
@@ -216,7 +211,7 @@ def main():
     
     print('Generating suppliers...')
     suppliers = generate_suppliers()
-    save_to_csv(suppliers, 'tables/suppliers.csv', ['supplier_id', 'supplier_name', 'contact_phone', 'reliability_rating', 'email'])
+    save_to_csv(suppliers, 'tables/suppliers.csv', ['supplier_id', 'supplier_name', 'contact_phone', 'email'])
     
     print('Generating parts...')
     parts = generate_parts()
@@ -227,7 +222,7 @@ def main():
     save_to_csv(employees, 'tables/employees.csv', ['employee_id', 'first_name', 'second_name', 'last_name', 'position', 'hire_date', 'age'])
     
     print('Generating invoices...')
-    invoices = generate_invoices(customers, employees)
+    invoices = generate_invoices()
     print('Generating invoice lines...')
     invoice_lines = generate_invoice_lines(invoices, parts)
     save_to_csv(invoice_lines, 'tables/invoice_lines.csv', ['invoiceline_id', 'invoice_id', 'part_id', 'quantity', 'unit_price', 'line_total'])

@@ -1,10 +1,65 @@
 import psycopg2
 from config import database_settings
 
+
+
+def datetime_transform(date: str):
+    return f'{date[6:10]}-{date[3:5]}-{date[0:2]}T{date[11:13]}:{date[14:16]}:{date[17:19]}'
+
+def date_transform(date: str):
+    return f'{date[6:10]}-{date[3:5]}-{date[0:2]}'
+
 def get_connection():
     return psycopg2.connect(**database_settings)
 
-#Удаление
+# Поиск
+
+def search_by_id(table_name, record_id):
+    conn = get_connection()
+    cur = conn.cursor()
+    try:
+        cur.execute(f"SELECT * FROM {table_name} WHERE {table_name.lower()}_id = %s", (record_id,))
+        rows = cur.fetchall()
+        
+        if not rows:
+            return None
+            
+        # Получаем названия столбцов
+        colnames = [desc[0] for desc in cur.description]
+        return colnames, rows
+    finally:
+        cur.close()
+        conn.close()
+
+def search_by_content(table_name, search_text):
+    conn = get_connection()
+    cur = conn.cursor()
+    try:
+        cur.execute(f"""
+            SELECT column_name 
+            FROM information_schema.columns 
+            WHERE table_name = %s 
+            AND data_type IN ('character varying', 'text', 'varchar')
+        """, (table_name.lower(),))
+        text_columns = [row[0] for row in cur.fetchall()]
+        if not text_columns:
+            return None
+        conditions = " OR ".join([f"{col} ILIKE %s" for col in text_columns])   
+        cur.execute(f"""
+            SELECT * FROM {table_name}
+            WHERE {conditions}
+            LIMIT 50
+        """, [f"%{search_text}%"]*len(text_columns))
+        rows = cur.fetchall()
+        if not rows:
+            return None
+        colnames = [desc[0] for desc in cur.description]
+        return colnames, rows
+    finally:
+        cur.close()
+        conn.close()
+
+# Удаление
 
 def delete_from_database(table: str, id: int):
     conn = get_connection()
@@ -20,11 +75,17 @@ def delete_from_database(table: str, id: int):
 #Вставки
 
 def insert_into_employee(data: str):
-    values = data.split(",")
-    if len(values) != 6:
-        raise ValueError("Формат: имя,фамилия,отчество,должность,дата найма,возраст\nФормат даты: ГГГГ-ММ-ДД")
+    values = data.split("\n")
+    if len(values) != 4:
+        raise ValueError("Формат:\nФИО\nдолжность\nдата найма (ДД.ММ.ГГГГ)\nвозраст")
+    name = values[0].split()
+    values.pop(0)
+    values.insert(0, name[2])
+    values.insert(0, name[1])
+    values.insert(0, name[0])
     conn = get_connection()
     cur = conn.cursor()
+    values[4] = date_transform(values[4])
     cur.execute("""
         INSERT INTO employee (first_name, second_name, last_name, position, hire_date, age)
         VALUES (%s, %s, %s, %s, %s, %s)
@@ -32,13 +93,22 @@ def insert_into_employee(data: str):
     conn.commit()
     cur.close()
     conn.close()
+    print(values)
 
 def insert_into_invoice(data: str):
-    values = data.split(",")
-    if len(values) != 5:
-        raise ValueError("Формат: дата,количесвто,id покупателя,id сотрудника,статус оплаты\nФормат даты: ГГГГ-ММ-ДД ЧЧ:ММ:СС")
+    values = data.split("\n")
+    if len(values) != 4:
+        raise ValueError("Формат:\nдата (ДД.ММ.ГГГГ ЧЧ.ММ.СС)\nid покупателя\nid сотрудника\nстатус оплаты")
     conn = get_connection()
     cur = conn.cursor()
+    values[0] = datetime_transform(values[0])
+    cur.execute("SELECT customer_id FROM Customer WHERE customer_id = %s", (values[1],))
+    if not cur.fetchone():
+        raise ValueError(f"Покупатель с ID {values[1]} не найден")
+    cur.execute("SELECT employee_id FROM Employee WHERE employee_id = %s", (values[2],))
+    if not cur.fetchone():
+        raise ValueError(f"Сотрудник с ID {values[2]} не найден")
+    values.insert(1, 0)
     cur.execute("""
         INSERT INTO invoice (invoice_date, total_amount, customer_id, employee_id, payment_status)
         VALUES (%s, %s, %s, %s, %s)
@@ -46,13 +116,24 @@ def insert_into_invoice(data: str):
     conn.commit()
     cur.close()
     conn.close()
+    print(values)
 
 def insert_into_invoiceline(data: str):
-    values = data.split(",")
-    if len(values) != 5:
-        raise ValueError("Формат: id накладной,id детали,количество,цена за единицу,сумма")
+    values = data.split("\n")
+    if len(values) != 3:
+        raise ValueError("Формат:\nid накладной\nid детали\nколичество")
     conn = get_connection()
     cur = conn.cursor()
+    cur.execute("SELECT invoice_id FROM invoice WHERE invoice_id = %s", (values[0],))
+    if not cur.fetchone():
+        raise ValueError(f"Накладная с ID {values[0]} не найдена")
+    cur.execute("SELECT part_id FROM Part WHERE part_id = %s", (values[1],))
+    if not cur.fetchone():
+        raise ValueError(f"Деталь с ID {values[1]} не найдена")
+    cur.execute("SELECT price FROM Part WHERE part_id = %s", (values[1],))
+    result = cur.fetchone()
+    values.append(result[0])
+    values.append(float(values[3]) * int(values[2]))
     cur.execute("""
         INSERT INTO invoiceline (invoice_id, part_id, quantity, unit_price, line_total)
         VALUES (%s, %s, %s, %s, %s)
@@ -60,13 +141,24 @@ def insert_into_invoiceline(data: str):
     conn.commit()
     cur.close()
     conn.close()
+    print(values)
 
 def insert_into_part(data: str):
-    values = data.split(",")
-    if len(values) != 8:
-        raise ValueError("Формат: материал,вес,цена,id типа,количество на складе,id поставщика,минимальный уровень запаса,в продаже")
+    values = data.split("\n")
+    if len(values) != 7:
+        raise ValueError("Формат:\nматериал\nвес\nцена\nid типа\nколичество на складе\nid поставщика\nминимальный уровень запаса")
     conn = get_connection()
     cur = conn.cursor()
+    cur.execute("SELECT parttype_id FROM PartType WHERE parttype_id = %s", (values[3],))
+    if not cur.fetchone():
+        raise ValueError(f"Тип детали с ID {values[3]} не найден")
+    cur.execute("SELECT supplier_id FROM Supplier WHERE supplier_id = %s", (values[5],))
+    if not cur.fetchone():
+        raise ValueError(f"Поставщик с ID {values[5]} не найден")
+    if values[4] < values[6]:
+        values.append('true')
+    else:
+        values.append('false')
     cur.execute("""
         INSERT INTO part (material, weight, price, parttype_id, quantity_in_stock, supplier_id, min_stock_level, is_active)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
@@ -74,48 +166,52 @@ def insert_into_part(data: str):
     conn.commit()
     cur.close()
     conn.close()
+    print(values)
 
 def insert_into_partttype(data: str):
-    values = data.split(",")
+    values = data.split("\n")
     if len(values) != 2:
-        raise ValueError("Формат: название,описание")
+        raise ValueError("Формат:\nназвание\nописание")
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("""
-        INSERT INTO part (type_name, description)
+        INSERT INTO parttype (type_name, description)
         VALUES (%s, %s)
     """, values)
     conn.commit()
     cur.close()
     conn.close()
+    print(values)
 
 def insert_into_supplier(data: str):
-    values = data.split(",")
-    if len(values) != 4:
-        raise ValueError("Формат: название,телефон,рейтинг надежности,почта")
+    values = data.split("\n")
+    if len(values) != 3:
+        raise ValueError("Формат:\nназвание\nтелефон\nпочта")
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("""
-        INSERT INTO part (supplier_name, contact_phone, reliability_rating, email)
+        INSERT INTO supplier (supplier_name, contact_phone, email)
+        VALUES (%s, %s, %s)
+    """, values)
+    conn.commit()
+    cur.close()
+    conn.close()
+    print(values)
+
+def insert_into_customer(data: str):
+    values = data.split("\n")
+    if len(values) != 4:
+        raise ValueError("Формат:\nназвание\nгород\nтелефон\nпочта")
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO customer (customer_name, city, contact_phone, email)
         VALUES (%s, %s, %s, %s)
     """, values)
     conn.commit()
     cur.close()
     conn.close()
-
-def insert_into_customer(data: str):
-    values = data.split(",")
-    if len(values) != 5:
-        raise ValueError("Формат: название,город,телефон,скидка,почта")
-    conn = get_connection()
-    cur = conn.cursor()
-    cur.execute("""
-        INSERT INTO part (customer_name, city, contact_phone, discount_percent, email)
-        VALUES (%s, %s, %s, %s, %s)
-    """, values)
-    conn.commit()
-    cur.close()
-    conn.close()
+    print(values)
 
 # Запросы
 
@@ -186,15 +282,21 @@ def most_valuable_employee():
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("""
+        WITH EmployeeSales AS (
+            SELECT
+                e.second_name || ' ' || e.first_name || ' ' || e.last_name AS полное_имя,
+                (SELECT COUNT(*) FROM Invoice WHERE employee_id = e.employee_id) AS всего_накладных,
+                ROUND((SELECT SUM(total_amount) FROM Invoice WHERE employee_id = e.employee_id), 2) AS всего_заработано
+            FROM Employee e
+        )
         SELECT 
-            employee_id AS id_сотрудника,
-            (SELECT second_name || ' ' || first_name || ' ' || last_name FROM Employee e WHERE e.employee_id = i.employee_id) AS полное_имя,
-            COUNT(*) AS число_накладных
-        FROM Invoice i
-        WHERE invoice_date >= CURRENT_DATE - INTERVAL '1 month'
-        GROUP BY id_сотрудника
-        ORDER BY число_накладных DESC
-        LIMIT 5
+            полное_имя,
+            всего_накладных,
+            ROUND(всего_заработано / NULLIF(всего_накладных, 0), 2) AS средний_чек,
+            всего_заработано
+        FROM EmployeeSales
+        ORDER BY всего_заработано DESC
+        LIMIT 10
     """)
     rows = cur.fetchall()
     colnames = [desc[0] for desc in cur.description]
@@ -241,16 +343,52 @@ def most_useless_employees():
     conn.close()
     return colnames, rows
 
-#TODO
-def to_retire_employees():
-    pass
-
-def invoices_for_period(data: str):
-    values = data.split(",")
-    if len(values) != 2:
-        raise ValueError("Формат: дата начала,дата конца\nФормат даты: ГГГГ-ММ-ДД")
+def get_sales_dynamics():
+    """Возвращает данные для графика продаж по месяцам"""
+    query = """
+        SELECT 
+            TO_CHAR(invoice_date, 'YYYY-MM') AS month,
+            SUM(total_amount) AS total_sales
+        FROM Invoice
+        GROUP BY month
+        ORDER BY month DESC
+        LIMIT 12
+    """
     conn = get_connection()
     cur = conn.cursor()
+    cur.execute(query)
+    return cur.fetchall()
+
+
+def get_payment_status_stats():
+    """Возвращает статистику по статусам оплат"""
+    query = """
+        SELECT 
+            payment_status,
+            COUNT(*) AS status_count,
+            ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM Invoice), 2) AS percentage
+        FROM Invoice
+        GROUP BY payment_status
+    """
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute(query)
+    return cur.fetchall()
+
+def invoices_for_period(data: str):
+    from datetime import datetime
+    values = data.split("\n")
+    if len(values) != 2:
+        raise ValueError("Формат: дата начала\nдата конца\nФормат даты: ДД.ММ.ГГГГ")
+    values = [date_transform(i) for i in values]
+    if values[0] > values[1]:
+        raise ValueError("Дата начала не может быть позже даты окончания")
+    conn = get_connection()
+    cur = conn.cursor()
+    if values[0] < "2020-05-11" or values[1] < "2020-05-11":
+        raise ValueError("База содержит накладные только с 11.05.2020")
+    if values[0] > str(datetime.now()).split()[0] or values[1] > str(datetime.now()).split()[0]:
+        raise ValueError("Нельзя посмотреть накладные из будущего")
     cur.execute("""
         SELECT 
             i.invoice_id AS id_накладной,
@@ -268,24 +406,3 @@ def invoices_for_period(data: str):
     conn.close()
     return colnames, rows
 
-
-'''
-DO $$
-DECLARE
-    r RECORD;
-BEGIN
-    FOR r IN 
-        SELECT t.relname AS table_name, 
-               a.attname AS column_name,
-               s.relname AS sequence_name
-        FROM pg_class s
-        JOIN pg_depend d ON d.objid = s.oid
-        JOIN pg_class t ON d.refobjid = t.oid
-        JOIN pg_attribute a ON (d.refobjid, d.refobjsubid) = (a.attrelid, a.attnum)
-        WHERE s.relkind = 'S' AND t.relkind = 'r'
-    LOOP
-        EXECUTE format('SELECT setval(%L, COALESCE((SELECT MAX(%I) FROM %I), 1))', 
-                      r.sequence_name, r.column_name, r.table_name);
-    END LOOP;
-END $$;
-'''

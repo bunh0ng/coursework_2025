@@ -1,7 +1,7 @@
 bot_settings = {
     'Name': 'Детали для строительных и производственных компаний',
     'Username': 'coursework_bmstu_bot',
-    'Token': '7735544999:AAFDTmZvqToLjVpRAD2FF9YLAExl_AYz0yY'
+    'Token': open('C:/token.txt', 'r', encoding='utf-8').read()
 }
 
 database_settings = {
