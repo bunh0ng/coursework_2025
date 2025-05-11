@@ -24,4 +24,5 @@ def ask_period(bot, message, menu, user_state):
         bot.send_message(message.chat.id, 'Введите период, за который хотите посмотреть накладные в формате\n<pre>ДД.ММ.ГГГГ\nДД.ММ.ГГГГ</pre>', parse_mode="HTML", reply_markup=types.ReplyKeyboardRemove())
         user_state[message.chat.id] = {'action': 'watch'}
     except Exception as e:
-        bot.send_message(message.chat.id, f'Ошибка:\n<pre>{e}</pre>', parse_mode="HTML", reply_markup=menu)
+        bot.send_message(message.chat.id, f'Ошибка:\n<pre>{e}</pre>', parse_mode="HTML", reply_markup=menu)\
+    
