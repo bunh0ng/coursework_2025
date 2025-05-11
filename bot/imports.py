@@ -11,5 +11,5 @@ from commands.check_fill import checkfill
 from commands.most_valuable_customers import mv_customers
 from commands.most_sold_parts import ms_parts 
 from commands.most_valuable_employee import mv_employee
-from commands.most_active_suppliers import ma_suppliers
+from commands.most_due import mst_due
 from commands.graphics.graphic import graphic_types, plot_selection

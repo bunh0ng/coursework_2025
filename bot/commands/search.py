@@ -9,7 +9,8 @@ table_map = {
             'Покупатель': 'Customer',
             'Деталь': 'Part',
             'Тип детали': 'PartType',
-            'Сотрудник': 'Employee'
+            'Сотрудник': 'Employee',
+            'Платеж': 'Payment'
         }
 
 def search_record(bot, message, menu, user_state):
@@ -28,7 +29,8 @@ def search_type(bot, message, menu, user_state):
         user_state[message.chat.id] = {'action': 'search_table', 'search_type': search_type}
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         markup.row('Накладная', 'Строка накладной', 'Поставщик', 'Покупатель')
-        markup.row('Деталь', 'Тип детали', 'Сотрудник', 'Назад')
+        markup.row('Деталь', 'Тип детали', 'Сотрудник', 'Платеж')
+        markup.row('Назад')
         bot.send_message(message.chat.id, 'В какой таблице искать?', reply_markup=markup)
     except Exception as e:
         bot.send_message(message.chat.id, f'Ошибка:\n<pre>{e}</pre>', parse_mode="HTML", reply_markup=menu)\

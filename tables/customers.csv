@@ -1,223 +1,223 @@
 customer_id,customer_name,city,contact_phone,email
-1,Doosan Heavy Industries,Чханвон,+7 (831) 538-9596,doosanheavyindustries@mail.ru
-2,Rolls-Royce Holdings,Лондон,+7 (448) 429-04-22,rolls-royceholdings@qq.com
-3,General Dynamics,Рестон,+7 (095) 991-0322,generaldynamics@sina.com
-4,Lockheed Martin,Бетесда,8 533 126 81 30,lockheedmartin@icloud.com
-5,Boeing,Чикаго,+7 207 466 01 11,boeing@qq.com
-6,Northrop Grumman,Фолс-Черч,8 (174) 058-44-02,northropgrumman@hushmail.com
-7,Raytheon Technologies,Уолтем,83518809854,raytheontechnologies@gmx.com
-8,L3Harris Technologies,Мельбурн,8 (031) 908-09-35,l3harristechnologies@gmail.com
-9,BAE Systems,Лондон,8 (690) 592-7053,baesystems@naver.com
-10,Safran,Париж,+77931887840,safran@yandex.ru
-11,United Technologies,Фармингтон,+74969868425,unitedtechnologies@mail.com
-12,PACCAR,Белвью,8 831 970 88 39,paccar@yandex.ru
-13,Continental AG,Ганновер,8 705 316 0738,continentalag@mail.ru
-14,Magna International,Орора,8 864 672 23 91,magnainternational@aol.com
-15,Dana Incorporated,Моми,+7 (111) 932-4791,danaincorporated@mail.ru
-16,Aisin Seiki,Карья,8 (154) 945-95-34,aisinseiki@fastmail.com
-17,NSK Ltd.,Токио,+7 754 664 26 70,nskltd.@fastmail.com
-18,Schaeffler Group,Херцогенаурах,80091558767,schaefflergroup@gmail.com
-19,GKN Automotive,Реддич,8 (197) 301-87-19,gknautomotive@hushmail.com
-20,Mahle GmbH,Штутгарт,+7 (006) 240-5799,mahlegmbh@yandex.ru
-21,Tenneco,Лейк-Форест,80937380912,tenneco@gmx.com
-22,Yazaki Corporation,Токио,+79038126308,yazakicorporation@protonmail.com
-23,Sumitomo Electric,Осака,+7 (022) 170-47-46,sumitomoelectric@yahoo.com
-24,Furukawa Electric,Токио,8 (390) 384-0546,furukawaelectric@zoho.com
-25,Nexans,Париж,+79193252146,nexans@qq.com
-26,Prysmian Group,Милан,+7 (273) 807-2806,prysmiangroup@163.com
-27,Legrand,Лимож,+7 (971) 209-6991,legrand@tutanota.com
-28,Hubbell Incorporated,Шелтон,+7 (929) 108-40-59,hubbellincorporated@aol.com
-29,nVent Electric,Лондон,89454897595,nventelectric@outlook.com
-30,Amphenol,Уоллингфорд,+76699506556,amphenol@rediffmail.com
-31,TE Connectivity,Шаффхаузен,+7 932 273 22 00,teconnectivity@gmail.com
-32,Molex,Лайл,8 (413) 278-05-12,molex@icloud.com
-33,Aptiv,Дублин,85572511816,aptiv@protonmail.com
-34,Lear Corporation,Саутфилд,+73186732007,learcorporation@protonmail.com
-35,Adient,Плимут,8 (608) 824-4388,adient@gmx.com
-36,BASF,Людвигсхафен,+7 335 071 59 07,basf@yandex.ru
-37,Dow Chemical,Мидленд,8 359 068 6217,dowchemical@mail.ru
-38,DuPont,Уилмингтон,8 655 929 1231,dupont@outlook.com
-39,LyondellBasell,Хьюстон,8 (189) 112-25-31,lyondellbasell@163.com
-40,Linde plc,Гилфорд,+7 (548) 591-1875,lindeplc@tutanota.com
-41,Air Liquide,Париж,+7 526 069 4848,airliquide@zoho.com
-42,Praxair,Данбери,8 (134) 143-1002,praxair@rediffmail.com
-43,Mitsubishi Chemical,Токио,8 (063) 808-1549,mitsubishichemical@aol.com
-44,Sumitomo Chemical,Токио,8 (575) 260-52-29,sumitomochemical@hotmail.com
-45,Toray Industries,Токио,81435603338,torayindustries@yahoo.com
-46,LG Chem,Сеул,8 606 110 4622,lgchem@tutanota.com
-47,Samsung SDI,Сеул,+7 (720) 675-42-53,samsungsdi@qq.com
-48,SK Innovation,Сеул,+7 (712) 439-68-95,skinnovation@qq.com
-49,ThyssenKrupp Steel,Дуйсбург,8 (530) 112-88-81,thyssenkruppsteel@rediffmail.com
-50,Alcoa,Питтсбург,+75660368146,alcoa@163.com
-51,Rio Tinto,Мельбурн,8 599 053 6369,riotinto@sina.com
-52,BHP,Мельбурн,8 (897) 514-80-93,bhp@mail.com
-53,Glencore,Баар,+7 981 230 77 74,glencore@mail.com
-54,Freeport-McMoRan,Финикс,+7 (001) 635-41-43,freeport-mcmoran@mail.ru
-55,Vale S.A.,Рио-де-Жанейро,83986786111,vales.a.@naver.com
-56,Anglo American,Лондон,8 834 785 1831,angloamerican@zoho.com
-57,Barrick Gold,Торонто,8 (392) 331-32-46,barrickgold@sina.com
-58,Newmont Corporation,Денвер,+7 (586) 208-2514,newmontcorporation@yahoo.com
-59,Fluor Corporation,Ирвинг,+7 (222) 867-6297,fluorcorporation@rediffmail.com
-60,Bechtel,Рестон,+7 105 224 4411,bechtel@yandex.ru
-61,Jacobs Engineering,Даллас,8 267 288 79 16,jacobsengineering@gmail.com
-62,AECOM,Лос-Анджелес,+7 (973) 672-0471,aecom@aol.com
-63,KBR,Хьюстон,+7 427 101 26 34,kbr@naver.com
-64,McDermott International,Хьюстон,8 906 315 08 28,mcdermottinternational@163.com
-65,TechnipFMC,Лондон,+7 819 404 68 33,technipfmc@outlook.com
-66,Saipem,Сан-Донато-Миланезе,+7 (575) 037-91-55,saipem@rediffmail.com
-67,Subsea 7,Лондон,+77550788934,subsea7@zoho.com
-68,Weatherford International,Хьюстон,80324695095,weatherfordinternational@zoho.com
-69,NOV (National Oilwell Varco),Хьюстон,+7 (962) 985-3640,nov(nationaloilwellvarco)@fastmail.com
-70,Mapal,Аален,+7 (721) 374-4956,mapal@yahoo.com
-71,Guhring,Альбштадт,+7 063 736 3737,guhring@naver.com
-72,Mitsubishi Materials,Токио,+7 (044) 507-9528,mitsubishimaterials@naver.com
-73,Sumitomo Electric Hardmetal,Осака,8 (625) 184-0847,sumitomoelectrichardmetal@zoho.com
-74,Kyocera,Киото,+7 (217) 613-3350,kyocera@tutanota.com
-75,Ceratizit,Маммер,8 (024) 236-8967,ceratizit@zoho.com
-76,Plansee Group,Ройтте,+7 (654) 459-6892,planseegroup@hushmail.com
-77,Hitachi Metals,Токио,+7 (690) 343-97-70,hitachimetals@tutanota.com
-78,Daido Steel,Нагоя,+7 (748) 588-0431,daidosteel@yandex.ru
-79,Nippon Steel & Sumitomo Metal,Токио,+7 388 498 21 63,nipponsteel&sumitomometal@icloud.com
-80,JFE Steel,Токио,+7 (724) 226-0768,jfesteel@yandex.ru
-81,Kobe Steel,Кобе,+7 (979) 361-1415,kobesteel@icloud.com
-82,Aichi Steel,Токай,+7 (811) 663-5148,aichisteel@gmx.com
-83,Sanyo Special Steel,Химэдзи,83352122990,sanyospecialsteel@yahoo.com
-84,Ovako,Стокгольм,8 (520) 114-3223,ovako@outlook.com
-85,Uddeholm,Хагфорс,+7 655 384 68 25,uddeholm@hushmail.com
-86,Böhler,Капфенберг,+7 (488) 172-3482,böhler@yahoo.com
-87,Carpenter Technology,Рединг,8 (562) 180-95-62,carpentertechnology@tutanota.com
-88,Allegheny Technologies,Питтсбург,8 966 599 41 97,alleghenytechnologies@aol.com
-89,Haynes International,Кокомо,+73130324927,haynesinternational@protonmail.com
-90,Special Metals Corporation,Хантингтон,+7 511 447 76 19,specialmetalscorporation@tutanota.com
-91,VDM Metals,Вердоль,+7 524 361 07 11,vdmmetals@protonmail.com
-92,Outokumpu Stainless,Эспоо,+7 (674) 876-6746,outokumpustainless@mail.com
-93,Steel Dynamics,Форт-Уэйн,+7 (780) 363-1976,steeldynamics@protonmail.com
-94,AK Steel,Уэст-Честер,+7 348 111 35 37,aksteel@zoho.com
-95,U.S. Steel,Питтсбург,+74979789715,u.s.steel@hushmail.com
-96,Cleveland-Cliffs,Кливленд,+7 (467) 629-1565,cleveland-cliffs@mail.ru
-97,CSN (Companhia Siderúrgica Nacional),Сан-Паулу,+7 (383) 036-61-15,csn(companhiasiderúrgicanacional)@zoho.com
-98,Usiminas,Белу-Оризонти,+7 (153) 895-27-46,usiminas@fastmail.com
-99,Ternium,Сан-Николас-де-лос-Гарса,+7 611 414 9416,ternium@icloud.com
-100,Techint Group,Милан,+7 (686) 215-4226,techintgroup@aol.com
-101,Tenova,Милан,+71541027298,tenova@aol.com
-102,Danieli,Буттрио,8 (423) 540-95-19,danieli@outlook.com
-103,SMS Group,Дюссельдорф,8 (597) 855-9277,smsgroup@163.com
-104,Primetals Technologies,Лондон,8 (621) 540-4373,primetalstechnologies@hotmail.com
-105,Andritz,Грац,80299754800,andritz@hushmail.com
-106,Loesche,Дюссельдорф,8 672 806 54 85,loesche@qq.com
-107,Gebr. Pfeiffer,Кайзерслаутерн,8 851 816 25 15,gebr.pfeiffer@rediffmail.com
-108,Polysius,Эссен,+7 (645) 048-10-31,polysius@icloud.com
-109,Claudius Peters,Гамбург,8 404 742 46 82,claudiuspeters@tutanota.com
-110,Schenck Process,Дармштадт,8 425 545 1892,schenckprocess@hushmail.com
-111,Bühler Group,Уцвиль,84010747004,bühlergroup@qq.com
-112,GEA Group,Дюссельдорф,8 145 064 6257,geagroup@aol.com
-113,ITT Inc.,Уайт-Плейнс,8 (791) 707-7653,ittinc.@rediffmail.com
-114,Kaeser Kompressoren,Кобург,+7 (316) 473-76-87,kaeserkompressoren@hotmail.com
-115,Hitachi Construction Machinery,Токио,84292724826,hitachiconstructionmachinery@mail.ru
-116,Kobelco,Токио,8 (910) 573-91-87,kobelco@fastmail.com
-117,JCB,Рочестер,+75971379507,jcb@aol.com
-118,CASE Construction,Расин,80433017915,caseconstruction@naver.com
-119,New Holland,Турин,+7 300 990 46 76,newholland@hotmail.com
-120,Terex,Норуолк,8 (785) 603-94-91,terex@163.com
-121,Manitowoc,Манитовок,+7 (394) 846-3231,manitowoc@tutanota.com
-122,Tadano,Такамацу,8 (525) 786-1326,tadano@hushmail.com
-123,Sennebogen,Штраубинг,8 (065) 625-3393,sennebogen@mail.ru
-124,Palfinger,Зальцбург,8 (989) 034-1266,palfinger@fastmail.com
-125,Haulotte,Лорм,+7 736 004 9729,haulotte@yahoo.com
-126,JLG Industries,Хейгерстаун,8 (571) 617-81-12,jlgindustries@naver.com
-127,Genie (Terex),Редмонд,+76550595805,genie(terex)@fastmail.com
-128,Skyjack,Гвелф,+7 798 651 46 07,skyjack@icloud.com
-129,Manitou Group,Ансени,+7 985 143 5341,manitougroup@gmail.com
-130,Doosan Infracore,Сеул,+7 630 637 60 53,doosaninfracore@aol.com
-131,Hyundai Construction Equipment,Сеул,8 (521) 506-1273,hyundaiconstructionequipment@zoho.com
-132,Sany Heavy Industry,Чанша,+7 283 547 24 58,sanyheavyindustry@fastmail.com
-133,Zoomlion,Чанша,8 495 844 3926,zoomlion@yandex.ru
-134,XCMG,Сюйчжоу,+72904675681,xcmg@naver.com
-135,Liugong,Лючжоу,8 148 838 1291,liugong@aol.com
-136,Lonking,Шанхай,8 (759) 832-6486,lonking@hotmail.com
-137,Shantui,Цзинин,8 462 113 56 43,shantui@163.com
-138,SDLG,Линьи,8 394 670 21 51,sdlg@gmail.com
-139,Yutong Heavy Industries,Чжэнчжоу,8 004 001 4117,yutongheavyindustries@yahoo.com
-140,Sinotruk,Цзинань,+7 (126) 544-8991,sinotruk@rediffmail.com
-141,FAW,Чанчунь,82610496014,faw@protonmail.com
-142,Dongfeng Motor,Ухань,+7 755 216 04 01,dongfengmotor@qq.com
-143,Shaanxi Heavy Duty Automobile,Сиань,8 459 113 9369,shaanxiheavydutyautomobile@fastmail.com
-144,Beiben Trucks,Чунцин,+7 (280) 273-22-19,beibentrucks@outlook.com
-145,Iveco,Турин,+7 (415) 770-61-52,iveco@mail.com
-146,Volvo Trucks,Гетеборг,+7 702 081 25 93,volvotrucks@hushmail.com
-147,DAF Trucks,Эйндховен,+7 962 996 31 25,daftrucks@aol.com
-148,Renault Trucks,Сен-Приест,8 (904) 467-03-27,renaulttrucks@yandex.ru
-149,Mercedes-Benz Trucks,Штутгарт,8 654 622 72 60,mercedes-benztrucks@hushmail.com
-150,Freightliner,Портленд,+7 (120) 126-44-63,freightliner@sina.com
-151,Western Star,Портленд,+7 (066) 852-54-23,westernstar@mail.com
-152,Kenworth,Киркланд,+78192551045,kenworth@aol.com
-153,Peterbilt,Дентон,8 762 314 30 46,peterbilt@zoho.com
-154,Mack Trucks,Гринсборо,8 (816) 897-9707,macktrucks@yandex.ru
-155,Navistar International,Лайл,8 352 106 5157,navistarinternational@qq.com
-156,Hino Motors,Токио,+7 947 255 73 11,hinomotors@hushmail.com
-157,Isuzu Motors,Токио,+70749611623,isuzumotors@protonmail.com
-158,UD Trucks,Агео,+7 (683) 146-4296,udtrucks@yandex.ru
-159,Fuso,Кавасаки,+75525137667,fuso@hushmail.com
-160,Tata Motors,Мумбаи,8 (424) 610-8065,tatamotors@163.com
-161,Ashok Leyland,Ченнаи,83057414450,ashokleyland@outlook.com
-162,Eicher Motors,Гургаон,+7 (072) 842-55-37,eichermotors@sina.com
-163,Mahindra Truck and Bus,Мумбаи,80339729145,mahindratruckandbus@naver.com
-164,Kamaz,Набережные Челны,+7 (638) 941-2071,kamaz@aol.com
-165,GAZ Group,Нижний Новгород,85252592752,gazgroup@fastmail.com
-166,KAMAZ,Набережные Челны,88934107313,kamaz@aol.com
-167,MAZ,Минск,+7 666 716 8110,maz@tutanota.com
-168,KrAZ,Кременчуг,8 062 802 6797,kraz@163.com
-169,BelAZ,Жодино,8 297 295 06 04,belaz@protonmail.com
-170,Scania-Vabis,Седертелье,+7 859 787 12 81,scania-vabis@zoho.com
-171,Van Hool,Конингсхойкт,8 (294) 001-4594,vanhool@rediffmail.com
-172,VDL Groep,Эйндховен,+7 261 890 8561,vdlgroep@aol.com
-173,Daimler Buses,Штутгарт,8 (753) 142-86-00,daimlerbuses@qq.com
-174,Volvo Buses,Гетеборг,8 769 794 57 68,volvobuses@fastmail.com
-175,Irizar,Ормайстеги,+74382145952,irizar@yandex.ru
-176,Solaris Bus & Coach,Болехово,8 287 248 1422,solarisbus&coach@qq.com
-177,MAN Bus,Мюнхен,+7 329 275 3765,manbus@rediffmail.com
-178,Neoplan,Штутгарт,8 295 875 42 18,neoplan@hushmail.com
-179,Setra,Ульм,+73135104410,setra@163.com
-180,Marcopolo,Кашиас-ду-Сул,8 (730) 200-0969,marcopolo@163.com
-181,Caio Induscar,Сан-Паулу,83790679778,caioinduscar@gmail.com
-182,Comil,Эрешин,+7 (934) 949-4605,comil@qq.com
-183,Agrale,Кашиас-ду-Сул,84565693460,agrale@protonmail.com
-184,Tatra,Копрживнице,8 202 627 4005,tatra@icloud.com
-185,Avtotor,Калининград,8 712 267 7989,avtotor@rediffmail.com
-186,Sollers,Москва,83697467509,sollers@zoho.com
-187,UAZ,Ульяновск,+7 370 262 8158,uaz@tutanota.com
-188,ZIL,Москва,8 032 311 27 16,zil@gmx.com
-189,KAMAZ,Набережные Челны,+7 675 634 80 92,kamaz@icloud.com
-190,BAZ,Брянск,8 (973) 585-44-24,baz@fastmail.com
-191,ZiL,Москва,+7 665 316 97 63,zil@hushmail.com
-192,AMO ZIL,Москва,+75464243248,amozil@163.com
-193,UralAZ,Миасс,+7 (385) 346-32-61,uralaz@mail.com
-194,KAvZ,Курган,+7 (062) 815-41-25,kavz@yandex.ru
-195,PAZ,Павлово,+7 700 897 2323,paz@qq.com
-196,LiAZ,Ликино-Дулево,8 276 070 4414,liaz@hushmail.com
-197,NefAZ,Нефтекамск,83502735175,nefaz@fastmail.com
-198,MAZ,Минск,+7 912 494 2347,maz@gmx.com
-199,BelAZ,Жодино,+7 938 723 33 84,belaz@yandex.ru
-200,MoAZ,Могилев,+7 (375) 760-86-42,moaz@yandex.ru
-201,KrAZ,Кременчуг,8 214 471 82 79,kraz@zoho.com
-202,LAZ,Львов,8 (160) 391-6196,laz@hushmail.com
-203,Bogdan,Черкассы,+7 (636) 827-7125,bogdan@sina.com
-204,Etalon,Москва,+7 (099) 175-8257,etalon@yandex.ru
-205,Volkswagen Commercial Vehicles,Ганновер,8 812 560 4032,volkswagencommercialvehicles@hushmail.com
-206,Ford Trucks,Стамбул,83721678217,fordtrucks@mail.ru
-207,Iveco Defence Vehicles,Больцано,8 (997) 284-85-16,ivecodefencevehicles@hushmail.com
-208,Oshkosh Corporation,Ошкош,8 (612) 532-71-51,oshkoshcorporation@qq.com
-209,Navistar Defense,Уоррен,+73212881611,navistardefense@163.com
-210,Rheinmetall MAN Military Vehicles,Мюнхен,80888494141,rheinmetallmanmilitaryvehicles@hushmail.com
-211,BAE Systems Land & Armaments,Стерлинг-Хайтс,+7 (160) 489-9334,baesystemsland&armaments@qq.com
-212,General Dynamics Land Systems,Лондон,8 (801) 967-14-24,generaldynamicslandsystems@aol.com
-213,Textron Marine & Land Systems,Новый Орлеан,+76472142500,textronmarine&landsystems@protonmail.com
-214,Patria,Хельсинки,8 666 827 6608,patria@outlook.com
-215,Nexter Systems,Версаль,8 (993) 382-1785,nextersystems@gmx.com
-216,Krauss-Maffei Wegmann,Мюнхен,+7 581 211 50 60,krauss-maffeiwegmann@fastmail.com
-217,Hyundai Rotem,Чханвон,+70531986892,hyundairotem@aol.com
-218,Doosan DST,Сеул,8 177 549 39 90,doosandst@gmail.com
-219,Hanwha Defense,Сеул,8 (471) 211-1779,hanwhadefense@hotmail.com
-220,Norinco,Пекин,8 (177) 406-7211,norinco@aol.com
-221,Sinomach,Пекин,+7 802 365 0552,sinomach@outlook.com
-222,China North Industries Group,Пекин,+7 173 531 37 58,chinanorthindustriesgroup@gmx.com
+1,Doosan Heavy Industries,Чханвон,+70855561857,doosanheavyindustries@mail.ru
+2,Rolls-Royce Holdings,Лондон,84484795853,rolls-royceholdings@yandex.ru
+3,General Dynamics,Рестон,82092495664,generaldynamics@aol.com
+4,Lockheed Martin,Бетесда,+77220766569,lockheedmartin@gmx.com
+5,Boeing,Чикаго,+7 (854) 102-67-91,boeing@icloud.com
+6,Northrop Grumman,Фолс-Черч,8 (738) 027-9794,northropgrumman@rediffmail.com
+7,Raytheon Technologies,Уолтем,8 (757) 228-29-18,raytheontechnologies@aol.com
+8,L3Harris Technologies,Мельбурн,81041185467,l3harristechnologies@aol.com
+9,BAE Systems,Лондон,+7 (817) 035-8890,baesystems@fastmail.com
+10,Safran,Париж,8 749 220 6329,safran@mail.com
+11,United Technologies,Фармингтон,85758588300,unitedtechnologies@tutanota.com
+12,PACCAR,Белвью,+7 088 362 31 07,paccar@rediffmail.com
+13,Continental AG,Ганновер,+7 (229) 459-05-77,continentalag@gmail.com
+14,Magna International,Орора,8 456 201 37 41,magnainternational@mail.com
+15,Dana Incorporated,Моми,8 863 246 6192,danaincorporated@qq.com
+16,Aisin Seiki,Карья,8 (035) 791-42-54,aisinseiki@qq.com
+17,NSK Ltd.,Токио,+7 181 154 7386,nskltd.@aol.com
+18,Schaeffler Group,Херцогенаурах,8 (605) 294-30-73,schaefflergroup@yahoo.com
+19,GKN Automotive,Реддич,86783371156,gknautomotive@yahoo.com
+20,Mahle GmbH,Штутгарт,+78723049429,mahlegmbh@rediffmail.com
+21,Tenneco,Лейк-Форест,8 922 919 6111,tenneco@sina.com
+22,Yazaki Corporation,Токио,+76996816431,yazakicorporation@naver.com
+23,Sumitomo Electric,Осака,+7 192 569 8495,sumitomoelectric@naver.com
+24,Furukawa Electric,Токио,+7 (466) 592-15-90,furukawaelectric@yandex.ru
+25,Nexans,Париж,+7 (792) 831-89-47,nexans@fastmail.com
+26,Prysmian Group,Милан,8 118 506 18 06,prysmiangroup@rediffmail.com
+27,Legrand,Лимож,+7 (270) 981-00-19,legrand@mail.ru
+28,Hubbell Incorporated,Шелтон,8 (219) 902-60-64,hubbellincorporated@qq.com
+29,nVent Electric,Лондон,8 091 780 1859,nventelectric@outlook.com
+30,Amphenol,Уоллингфорд,+72775140168,amphenol@mail.com
+31,TE Connectivity,Шаффхаузен,+7 (778) 124-85-63,teconnectivity@qq.com
+32,Molex,Лайл,8 (362) 998-84-65,molex@sina.com
+33,Aptiv,Дублин,+7 (065) 181-38-59,aptiv@gmail.com
+34,Lear Corporation,Саутфилд,8 047 184 4067,learcorporation@mail.ru
+35,Adient,Плимут,+7 298 320 7396,adient@outlook.com
+36,BASF,Людвигсхафен,8 528 447 4072,basf@sina.com
+37,Dow Chemical,Мидленд,80395095054,dowchemical@mail.com
+38,DuPont,Уилмингтон,8 (518) 161-0912,dupont@gmail.com
+39,LyondellBasell,Хьюстон,8 (390) 884-1101,lyondellbasell@yahoo.com
+40,Linde plc,Гилфорд,+7 (390) 962-0360,lindeplc@hotmail.com
+41,Air Liquide,Париж,+79777481981,airliquide@outlook.com
+42,Praxair,Данбери,8 (284) 758-57-44,praxair@fastmail.com
+43,Mitsubishi Chemical,Токио,+7 084 378 8526,mitsubishichemical@hotmail.com
+44,Sumitomo Chemical,Токио,8 616 474 6357,sumitomochemical@sina.com
+45,Toray Industries,Токио,8 (638) 429-4606,torayindustries@mail.com
+46,LG Chem,Сеул,8 215 986 7254,lgchem@hushmail.com
+47,Samsung SDI,Сеул,+7 (035) 359-68-34,samsungsdi@outlook.com
+48,SK Innovation,Сеул,8 605 587 62 76,skinnovation@yahoo.com
+49,ThyssenKrupp Steel,Дуйсбург,8 482 719 3522,thyssenkruppsteel@yandex.ru
+50,Alcoa,Питтсбург,8 541 428 50 96,alcoa@zoho.com
+51,Rio Tinto,Мельбурн,+7 (707) 005-86-69,riotinto@yahoo.com
+52,BHP,Мельбурн,+7 705 265 33 57,bhp@sina.com
+53,Glencore,Баар,8 (293) 943-0523,glencore@aol.com
+54,Freeport-McMoRan,Финикс,89258401525,freeport-mcmoran@qq.com
+55,Vale S.A.,Рио-де-Жанейро,8 (245) 040-83-31,vales.a.@hushmail.com
+56,Anglo American,Лондон,+7 (474) 220-7036,angloamerican@yahoo.com
+57,Barrick Gold,Торонто,8 862 075 52 02,barrickgold@gmx.com
+58,Newmont Corporation,Денвер,8 961 373 46 62,newmontcorporation@yahoo.com
+59,Fluor Corporation,Ирвинг,8 (248) 553-9858,fluorcorporation@hushmail.com
+60,Bechtel,Рестон,8 (095) 253-4959,bechtel@outlook.com
+61,Jacobs Engineering,Даллас,8 098 445 6739,jacobsengineering@rediffmail.com
+62,AECOM,Лос-Анджелес,+72897122192,aecom@mail.com
+63,KBR,Хьюстон,8 (674) 885-2478,kbr@sina.com
+64,McDermott International,Хьюстон,8 583 978 35 42,mcdermottinternational@mail.com
+65,TechnipFMC,Лондон,+77512901488,technipfmc@outlook.com
+66,Saipem,Сан-Донато-Миланезе,+7 (908) 481-77-66,saipem@yahoo.com
+67,Subsea 7,Лондон,+7 476 538 5474,subsea7@yahoo.com
+68,Weatherford International,Хьюстон,+7 (800) 963-1003,weatherfordinternational@gmx.com
+69,NOV (National Oilwell Varco),Хьюстон,+7 978 679 0861,nov(nationaloilwellvarco)@aol.com
+70,Mapal,Аален,+7 (490) 460-50-51,mapal@yandex.ru
+71,Guhring,Альбштадт,+7 (207) 341-1294,guhring@rediffmail.com
+72,Mitsubishi Materials,Токио,+7 (982) 913-46-97,mitsubishimaterials@yandex.ru
+73,Sumitomo Electric Hardmetal,Осака,8 (724) 133-8346,sumitomoelectrichardmetal@rediffmail.com
+74,Kyocera,Киото,80515675860,kyocera@yandex.ru
+75,Ceratizit,Маммер,+7 109 792 5989,ceratizit@sina.com
+76,Plansee Group,Ройтте,+7 (661) 083-06-02,planseegroup@qq.com
+77,Hitachi Metals,Токио,88886284993,hitachimetals@hushmail.com
+78,Daido Steel,Нагоя,8 (655) 867-4291,daidosteel@icloud.com
+79,Nippon Steel & Sumitomo Metal,Токио,+7 (577) 153-6478,nipponsteel&sumitomometal@aol.com
+80,JFE Steel,Токио,8 (611) 505-3807,jfesteel@qq.com
+81,Kobe Steel,Кобе,87030858826,kobesteel@tutanota.com
+82,Aichi Steel,Токай,82222180978,aichisteel@gmx.com
+83,Sanyo Special Steel,Химэдзи,+7 (960) 220-57-32,sanyospecialsteel@gmail.com
+84,Ovako,Стокгольм,+7 (857) 969-5454,ovako@aol.com
+85,Uddeholm,Хагфорс,86203916431,uddeholm@hushmail.com
+86,Böhler,Капфенберг,+79617117573,böhler@163.com
+87,Carpenter Technology,Рединг,+7 857 547 80 79,carpentertechnology@gmail.com
+88,Allegheny Technologies,Питтсбург,+7 (404) 383-1618,alleghenytechnologies@mail.com
+89,Haynes International,Кокомо,+7 899 841 41 69,haynesinternational@yahoo.com
+90,Special Metals Corporation,Хантингтон,+7 249 761 51 40,specialmetalscorporation@rediffmail.com
+91,VDM Metals,Вердоль,8 473 424 71 75,vdmmetals@hushmail.com
+92,Outokumpu Stainless,Эспоо,8 192 275 2320,outokumpustainless@tutanota.com
+93,Steel Dynamics,Форт-Уэйн,+7 (013) 812-1007,steeldynamics@outlook.com
+94,AK Steel,Уэст-Честер,+7 (649) 604-1606,aksteel@mail.ru
+95,U.S. Steel,Питтсбург,8 034 490 01 17,u.s.steel@hushmail.com
+96,Cleveland-Cliffs,Кливленд,8 752 906 72 51,cleveland-cliffs@hotmail.com
+97,CSN (Companhia Siderúrgica Nacional),Сан-Паулу,+7 (855) 676-90-57,csn(companhiasiderúrgicanacional)@naver.com
+98,Usiminas,Белу-Оризонти,8 506 313 0359,usiminas@mail.com
+99,Ternium,Сан-Николас-де-лос-Гарса,83073311808,ternium@sina.com
+100,Techint Group,Милан,+7 (761) 790-17-57,techintgroup@sina.com
+101,Tenova,Милан,8 (620) 440-60-89,tenova@gmx.com
+102,Danieli,Буттрио,+7 (081) 415-0714,danieli@qq.com
+103,SMS Group,Дюссельдорф,8 133 544 69 09,smsgroup@mail.ru
+104,Primetals Technologies,Лондон,8 (636) 935-82-22,primetalstechnologies@fastmail.com
+105,Andritz,Грац,8 (354) 866-8130,andritz@icloud.com
+106,Loesche,Дюссельдорф,+7 926 839 9694,loesche@mail.com
+107,Gebr. Pfeiffer,Кайзерслаутерн,8 (362) 256-10-54,gebr.pfeiffer@hotmail.com
+108,Polysius,Эссен,+7 (499) 586-67-38,polysius@gmail.com
+109,Claudius Peters,Гамбург,+7 789 698 9170,claudiuspeters@sina.com
+110,Schenck Process,Дармштадт,+7 (480) 695-7949,schenckprocess@mail.ru
+111,Bühler Group,Уцвиль,80201067259,bühlergroup@naver.com
+112,GEA Group,Дюссельдорф,8 712 322 1769,geagroup@mail.ru
+113,ITT Inc.,Уайт-Плейнс,+7 (993) 564-22-92,ittinc.@mail.com
+114,Kaeser Kompressoren,Кобург,8 (341) 855-96-57,kaeserkompressoren@tutanota.com
+115,Hitachi Construction Machinery,Токио,81545807612,hitachiconstructionmachinery@outlook.com
+116,Kobelco,Токио,8 (656) 839-0939,kobelco@yahoo.com
+117,JCB,Рочестер,8 823 486 1756,jcb@outlook.com
+118,CASE Construction,Расин,8 850 353 89 28,caseconstruction@naver.com
+119,New Holland,Турин,+7 980 941 70 80,newholland@gmail.com
+120,Terex,Норуолк,+72162478299,terex@zoho.com
+121,Manitowoc,Манитовок,86711013203,manitowoc@163.com
+122,Tadano,Такамацу,+7 317 050 0756,tadano@fastmail.com
+123,Sennebogen,Штраубинг,+74914242942,sennebogen@tutanota.com
+124,Palfinger,Зальцбург,8 (409) 129-5786,palfinger@outlook.com
+125,Haulotte,Лорм,8 049 466 2826,haulotte@rediffmail.com
+126,JLG Industries,Хейгерстаун,+78019117115,jlgindustries@hotmail.com
+127,Genie (Terex),Редмонд,8 (841) 986-87-78,genie(terex)@protonmail.com
+128,Skyjack,Гвелф,8 (452) 524-65-18,skyjack@hotmail.com
+129,Manitou Group,Ансени,83312324531,manitougroup@gmail.com
+130,Doosan Infracore,Сеул,8 875 933 5000,doosaninfracore@protonmail.com
+131,Hyundai Construction Equipment,Сеул,+7 (570) 888-2030,hyundaiconstructionequipment@163.com
+132,Sany Heavy Industry,Чанша,+7 (701) 605-46-06,sanyheavyindustry@qq.com
+133,Zoomlion,Чанша,8 622 022 62 19,zoomlion@sina.com
+134,XCMG,Сюйчжоу,8 (315) 424-47-52,xcmg@gmail.com
+135,Liugong,Лючжоу,+7 (346) 763-68-22,liugong@zoho.com
+136,Lonking,Шанхай,8 291 857 96 90,lonking@mail.com
+137,Shantui,Цзинин,8 832 340 7663,shantui@gmx.com
+138,SDLG,Линьи,+7 (083) 622-2862,sdlg@aol.com
+139,Yutong Heavy Industries,Чжэнчжоу,8 799 650 43 82,yutongheavyindustries@yahoo.com
+140,Sinotruk,Цзинань,+7 (472) 013-85-70,sinotruk@naver.com
+141,FAW,Чанчунь,+7 (593) 695-2039,faw@zoho.com
+142,Dongfeng Motor,Ухань,+7 031 662 9838,dongfengmotor@outlook.com
+143,Shaanxi Heavy Duty Automobile,Сиань,8 (173) 443-0926,shaanxiheavydutyautomobile@gmail.com
+144,Beiben Trucks,Чунцин,86350042085,beibentrucks@yahoo.com
+145,Iveco,Турин,8 789 312 0323,iveco@gmail.com
+146,Volvo Trucks,Гетеборг,+7 (576) 309-5208,volvotrucks@mail.ru
+147,DAF Trucks,Эйндховен,8 198 254 1635,daftrucks@rediffmail.com
+148,Renault Trucks,Сен-Приест,8 469 942 57 15,renaulttrucks@mail.com
+149,Mercedes-Benz Trucks,Штутгарт,8 637 244 7137,mercedes-benztrucks@yandex.ru
+150,Freightliner,Портленд,+7 (810) 073-3541,freightliner@yahoo.com
+151,Western Star,Портленд,8 (913) 422-7938,westernstar@163.com
+152,Kenworth,Киркланд,8 926 274 24 83,kenworth@gmail.com
+153,Peterbilt,Дентон,80663988709,peterbilt@yahoo.com
+154,Mack Trucks,Гринсборо,8 (824) 954-8154,macktrucks@163.com
+155,Navistar International,Лайл,8 595 936 8363,navistarinternational@rediffmail.com
+156,Hino Motors,Токио,+7 968 382 92 90,hinomotors@naver.com
+157,Isuzu Motors,Токио,8 865 524 9694,isuzumotors@tutanota.com
+158,UD Trucks,Агео,+7 (852) 780-8416,udtrucks@163.com
+159,Fuso,Кавасаки,+7 391 724 95 32,fuso@hushmail.com
+160,Tata Motors,Мумбаи,83107593745,tatamotors@163.com
+161,Ashok Leyland,Ченнаи,8 088 557 5209,ashokleyland@mail.com
+162,Eicher Motors,Гургаон,+78616648324,eichermotors@tutanota.com
+163,Mahindra Truck and Bus,Мумбаи,8 (929) 008-43-80,mahindratruckandbus@tutanota.com
+164,Kamaz,Набережные Челны,+7 520 950 86 24,kamaz@sina.com
+165,GAZ Group,Нижний Новгород,+7 (898) 331-8138,gazgroup@outlook.com
+166,KAMAZ,Набережные Челны,8 603 213 9439,kamaz@mail.ru
+167,MAZ,Минск,8 717 879 04 16,maz@gmail.com
+168,KrAZ,Кременчуг,88612136686,kraz@fastmail.com
+169,BelAZ,Жодино,+79926132992,belaz@hotmail.com
+170,Scania-Vabis,Седертелье,8 303 533 3206,scania-vabis@outlook.com
+171,Van Hool,Конингсхойкт,+7 695 749 0864,vanhool@yahoo.com
+172,VDL Groep,Эйндховен,+73743927457,vdlgroep@rediffmail.com
+173,Daimler Buses,Штутгарт,8 (045) 084-9397,daimlerbuses@fastmail.com
+174,Volvo Buses,Гетеборг,+7 (075) 373-6115,volvobuses@163.com
+175,Irizar,Ормайстеги,8 929 050 6179,irizar@gmx.com
+176,Solaris Bus & Coach,Болехово,+7 347 642 8392,solarisbus&coach@mail.com
+177,MAN Bus,Мюнхен,+73900092821,manbus@fastmail.com
+178,Neoplan,Штутгарт,8 300 448 17 44,neoplan@sina.com
+179,Setra,Ульм,8 (878) 456-58-40,setra@gmx.com
+180,Marcopolo,Кашиас-ду-Сул,+77135198987,marcopolo@tutanota.com
+181,Caio Induscar,Сан-Паулу,+7 131 601 38 92,caioinduscar@aol.com
+182,Comil,Эрешин,8 (274) 677-8613,comil@aol.com
+183,Agrale,Кашиас-ду-Сул,+7 091 228 3577,agrale@naver.com
+184,Tatra,Копрживнице,8 (755) 328-2643,tatra@fastmail.com
+185,Avtotor,Калининград,81067394959,avtotor@outlook.com
+186,Sollers,Москва,+7 741 994 14 66,sollers@mail.ru
+187,UAZ,Ульяновск,+7 (275) 691-10-27,uaz@hushmail.com
+188,ZIL,Москва,8 (139) 697-24-14,zil@mail.ru
+189,KAMAZ,Набережные Челны,8 160 106 50 10,kamaz@naver.com
+190,BAZ,Брянск,+7 290 115 41 23,baz@163.com
+191,ZiL,Москва,8 103 154 9623,zil@naver.com
+192,AMO ZIL,Москва,+73416205016,amozil@163.com
+193,UralAZ,Миасс,8 281 942 1032,uralaz@qq.com
+194,KAvZ,Курган,8 824 461 9706,kavz@mail.ru
+195,PAZ,Павлово,+7 753 609 57 50,paz@rediffmail.com
+196,LiAZ,Ликино-Дулево,8 (376) 979-95-48,liaz@protonmail.com
+197,NefAZ,Нефтекамск,+7 (304) 146-9850,nefaz@gmx.com
+198,MAZ,Минск,+77725671612,maz@icloud.com
+199,BelAZ,Жодино,+78572508358,belaz@rediffmail.com
+200,MoAZ,Могилев,86927060357,moaz@gmx.com
+201,KrAZ,Кременчуг,+7 881 850 1603,kraz@hotmail.com
+202,LAZ,Львов,8 (105) 548-34-94,laz@sina.com
+203,Bogdan,Черкассы,+73099771655,bogdan@gmail.com
+204,Etalon,Москва,8 (656) 947-4848,etalon@naver.com
+205,Volkswagen Commercial Vehicles,Ганновер,+7 510 796 21 64,volkswagencommercialvehicles@fastmail.com
+206,Ford Trucks,Стамбул,+7 473 105 96 34,fordtrucks@aol.com
+207,Iveco Defence Vehicles,Больцано,8 (808) 682-57-43,ivecodefencevehicles@naver.com
+208,Oshkosh Corporation,Ошкош,+7 (279) 548-81-75,oshkoshcorporation@hotmail.com
+209,Navistar Defense,Уоррен,+7 148 583 91 86,navistardefense@fastmail.com
+210,Rheinmetall MAN Military Vehicles,Мюнхен,82001701819,rheinmetallmanmilitaryvehicles@yandex.ru
+211,BAE Systems Land & Armaments,Стерлинг-Хайтс,8 (606) 045-24-18,baesystemsland&armaments@sina.com
+212,General Dynamics Land Systems,Лондон,+7 852 242 2683,generaldynamicslandsystems@naver.com
+213,Textron Marine & Land Systems,Новый Орлеан,8 715 832 3844,textronmarine&landsystems@fastmail.com
+214,Patria,Хельсинки,+7 (451) 724-2118,patria@rediffmail.com
+215,Nexter Systems,Версаль,+72375176915,nextersystems@qq.com
+216,Krauss-Maffei Wegmann,Мюнхен,+7 682 444 1196,krauss-maffeiwegmann@rediffmail.com
+217,Hyundai Rotem,Чханвон,+7 (013) 891-5683,hyundairotem@yandex.ru
+218,Doosan DST,Сеул,+7 381 868 8645,doosandst@fastmail.com
+219,Hanwha Defense,Сеул,8 (468) 045-4263,hanwhadefense@mail.ru
+220,Norinco,Пекин,+7 (365) 278-6709,norinco@fastmail.com
+221,Sinomach,Пекин,8 (620) 133-41-90,sinomach@zoho.com
+222,China North Industries Group,Пекин,+7 122 717 7861,chinanorthindustriesgroup@zoho.com

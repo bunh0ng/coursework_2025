@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from faker import Faker
 from natasha import MorphVocab
 
+
 m = MorphVocab()
 fake = Faker("ru_RU")
 
@@ -151,10 +152,7 @@ def generate_invoices():
             'total_amount': 0, 
             'customer_id': random.randint(1, NUM_CUSTOMERS),
             'employee_id': random.randint(1, NUM_EMPLOYEES),
-            'payment_status': random.choices(
-                ['Оплачено', 'Частично оплачено', 'Не оплачено'], 
-                weights=[85, 10, 5]
-            )[0]
+            'payment_status': 'Не оплачено'
         })
     return invoices
 
@@ -187,9 +185,63 @@ def generate_invoice_lines(invoices, parts):
             line_id += 1
 
         invoice['total_amount'] = round(invoice_total, 2)
-
     
     return invoice_lines
+
+# Генерация данных для таблицы Payments (Платежи)
+def generate_payments(invoices):
+    payments = []
+    line_id = 1
+
+    for invoice in invoices:
+        status_chance = random.random()
+        total = invoice['total_amount']
+        paid = 0
+
+        if status_chance < 0.7:
+            num_parts = random.randint(1, 5)
+            part_amounts = [round(total / num_parts, 2) for _ in range(num_parts - 1)]
+            part_amounts.append(round(total - sum(part_amounts), 2)) 
+
+            for amount in part_amounts:
+                payment_date = fake.date_time_between(
+                    start_date=datetime.fromisoformat(invoice['invoice_date']),
+                    end_date=datetime.now()
+                )
+                payments.append({
+                    'payment_id': line_id,
+                    'invoice_id': invoice['invoice_id'],
+                    'payment_date': payment_date.isoformat(),
+                    'amount': amount,
+                    'payment_method': random.choices(
+                        ['Наличный расчет', 'Безналичный расчет'], weights=[10, 90]
+                    )[0]
+                })
+                line_id += 1
+                paid += amount
+
+            invoice['payment_status'] = 'Оплачено'
+
+        elif status_chance < 0.9:
+            amount = round(random.uniform(0.1, total * 0.9), 2)
+            payment_date = fake.date_time_between(
+                start_date=datetime.fromisoformat(invoice['invoice_date']),
+                end_date=datetime.now()
+            )
+            payments.append({
+                'payment_id': line_id,
+                'invoice_id': invoice['invoice_id'],
+                'payment_date': payment_date.isoformat(),
+                'amount': amount,
+                'payment_method': random.choice(['Наличный расчет', 'Безналичный расчет'])
+            })
+            line_id += 1
+            invoice['payment_status'] = 'Частично оплачено'
+
+        else:
+            invoice['payment_status'] = 'Не оплачено'
+
+    return payments
 
 # Функция для сохранения данных в CSV
 def save_to_csv(data, filename, fieldnames):
@@ -225,8 +277,12 @@ def main():
     invoices = generate_invoices()
     print('Generating invoice lines...')
     invoice_lines = generate_invoice_lines(invoices, parts)
+    print('Generating invoice payments...')
+    payments = generate_payments(invoices)
     save_to_csv(invoice_lines, 'tables/invoice_lines.csv', ['invoiceline_id', 'invoice_id', 'part_id', 'quantity', 'unit_price', 'line_total'])
+    save_to_csv(payments, 'tables/payments.csv', ['payment_id', 'invoice_id', 'payment_date', 'amount', 'payment_method'])
     save_to_csv(invoices, 'tables/invoices.csv', ['invoice_id', 'invoice_date', 'total_amount', 'customer_id', 'employee_id', 'payment_status'])
+    
 
 if __name__ == '__main__':
     main()

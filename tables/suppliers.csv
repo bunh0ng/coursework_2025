@@ -1,115 +1,115 @@
 supplier_id,supplier_name,contact_phone,email
-1,Bosch,89571645547,bosch@gmx.com
-2,Siemens,8 193 279 3760,siemens@mail.ru
-3,General Electric,+7 (403) 935-65-13,generalelectric@rediffmail.com
-4,Caterpillar,8 (263) 747-7651,caterpillar@protonmail.com
-5,Honeywell,+7 (728) 148-79-82,honeywell@gmx.com
-6,3M,8 850 581 18 93,3m@gmx.com
-7,ABB,8 766 621 2173,abb@zoho.com
-8,Schneider Electric,+7 518 692 5752,schneiderelectric@qq.com
-9,Mitsubishi Heavy Industries,+7 (746) 031-51-63,mitsubishiheavyindustries@163.com
-10,Hitachi,8 953 437 9690,hitachi@tutanota.com
-11,Toshiba,80559789277,toshiba@zoho.com
-12,Hyundai Heavy Industries,82485653702,hyundaiheavyindustries@tutanota.com
-13,Doosan,8 (648) 270-0008,doosan@fastmail.com
-14,ThyssenKrupp,8 (030) 378-87-53,thyssenkrupp@hotmail.com
-15,Rolls-Royce,8 470 192 70 91,rolls-royce@yandex.ru
-16,Alstom,8 (183) 485-29-68,alstom@mail.ru
-17,Emerson Electric,+7 (931) 351-13-95,emersonelectric@qq.com
-18,Rockwell Automation,8 686 019 15 79,rockwellautomation@sina.com
-19,Cummins,+7 (137) 255-2471,cummins@icloud.com
-20,John Deere,+7 008 206 94 42,johndeere@gmx.com
-21,Volvo Group,+7 (919) 710-39-71,volvogroup@zoho.com
-22,Daimler Truck,8 497 563 0653,daimlertruck@hushmail.com
-23,Parker Hannifin,8 (567) 624-3524,parkerhannifin@mail.ru
-24,Eaton,+7 (138) 125-54-34,eaton@hushmail.com
-25,ZF Friedrichshafen,+77381765824,zffriedrichshafen@hotmail.com
-26,Continental,+7 (520) 511-95-08,continental@mail.com
-27,Magna,+7 504 795 14 08,magna@yandex.ru
-28,BorgWarner,8 665 839 1365,borgwarner@hotmail.com
-29,Valeo,8 936 844 22 49,valeo@163.com
-30,Faurecia,+7 (416) 047-92-51,faurecia@sina.com
-31,Mahle,+7 (352) 629-4322,mahle@naver.com
-32,Knorr-Bremse,8 966 589 6773,knorr-bremse@mail.com
-33,Wabtec,8 (986) 757-7209,wabtec@fastmail.com
-34,SKF,8 (539) 741-5248,skf@rediffmail.com
-35,Timken,8 (477) 427-6727,timken@protonmail.com
-36,NSK,8 (760) 577-95-79,nsk@hotmail.com
-37,NTN,8 (808) 052-67-58,ntn@outlook.com
-38,JTEKT,82207762789,jtekt@gmail.com
-39,Schaeffler,+7 146 556 39 65,schaeffler@naver.com
-40,GKN,8 (217) 827-6384,gkn@yahoo.com
-41,Sandvik,88834721922,sandvik@hushmail.com
-42,Kennametal,+74048486459,kennametal@gmail.com
-43,Walter AG,8 209 838 2928,walterag@tutanota.com
-44,Iscar,8 (143) 314-87-12,iscar@aol.com
-45,Seco Tools,+76032233995,secotools@mail.com
-46,MAPAL,80956432412,mapal@gmail.com
-47,Dormer Pramet,8 (923) 202-33-01,dormerpramet@naver.com
-48,Gühring,+7 (654) 785-1994,gühring@tutanota.com
-49,Liebherr,8 107 185 6355,liebherr@gmx.com
-50,Komatsu,8 (555) 657-3162,komatsu@tutanota.com
-51,Wärtsilä,+74246187150,wärtsilä@hotmail.com
-52,MAN Energy Solutions,8 (351) 709-6228,manenergysolutions@gmx.com
-53,Sulzer,8 (243) 214-2899,sulzer@naver.com
-54,Atlas Copco,+72365998478,atlascopco@gmx.com
-55,Ingersoll Rand,8 032 985 5470,ingersollrand@zoho.com
-56,Gardner Denver,8 136 736 08 07,gardnerdenver@gmail.com
-57,Sullair,+7 670 924 2396,sullair@tutanota.com
-58,Kaeser,82638264344,kaeser@gmx.com
-59,Grundfos,+7 361 556 35 25,grundfos@yahoo.com
-60,KSB,+7 429 878 1263,ksb@zoho.com
-61,Wilo,+78793849338,wilo@mail.com
-62,Xylem,+7 808 295 39 16,xylem@yahoo.com
-63,Flowserve,84993283045,flowserve@tutanota.com
-64,ITT Inc,89391698999,ittinc@icloud.com
-65,Pentair,8 564 594 61 17,pentair@yahoo.com
-66,Alfa Laval,8 (431) 561-8591,alfalaval@163.com
-67,GEA,8 (056) 265-82-31,gea@protonmail.com
-68,SPX Flow,+7 (312) 881-60-52,spxflow@outlook.com
-69,SMC Corporation,8 (419) 729-0466,smccorporation@outlook.com
-70,Festo,+76824148918,festo@fastmail.com
-71,Pall,8 833 922 82 10,pall@yandex.ru
-72,Donaldson,8 986 788 3619,donaldson@163.com
-73,Parker Hannifin,8 (610) 531-0614,parkerhannifin@sina.com
-74,Swagelok,+7 (330) 595-94-86,swagelok@gmail.com
-75,Camozzi,8 674 763 3921,camozzi@qq.com
-76,Norgren,+7 159 947 5495,norgren@hotmail.com
-77,Rotork,8 013 146 2369,rotork@icloud.com
-78,AUMA,+7 (746) 181-18-37,auma@hotmail.com
-79,Siemens Healthineers,+7 (038) 867-9035,siemenshealthineers@qq.com
-80,Philips,+7 (684) 006-9464,philips@zoho.com
-81,GE Healthcare,84233154150,gehealthcare@hushmail.com
-82,Baker Hughes,8 454 936 30 11,bakerhughes@mail.com
-83,Halliburton,8 957 287 1460,halliburton@outlook.com
-84,Schlumberger,+7 073 226 01 44,schlumberger@yandex.ru
-85,Weatherford,+72261359906,weatherford@aol.com
-86,National Oilwell Varco,+7 (678) 721-01-20,nationaloilwellvarco@hushmail.com
-87,Tenaris,+7 (060) 244-72-82,tenaris@qq.com
-88,Vallourec,8 695 439 7047,vallourec@yahoo.com
-89,TMK,8 (582) 190-86-00,tmk@rediffmail.com
-90,SSAB,8 976 809 44 15,ssab@yahoo.com
-91,Voestalpine,+7 (352) 936-70-56,voestalpine@yandex.ru
-92,ArcelorMittal,+7 677 959 5612,arcelormittal@aol.com
-93,Nippon Steel,8 (886) 376-9517,nipponsteel@mail.ru
-94,POSCO,8 (491) 416-50-80,posco@hotmail.com
-95,Tata Steel,8 (505) 047-18-85,tatasteel@yandex.ru
-96,Outokumpu,8 000 629 58 76,outokumpu@yandex.ru
-97,Aperam,8 944 551 99 01,aperam@fastmail.com
-98,Nucor,+7 (539) 424-92-48,nucor@aol.com
-99,Gerdau,8 021 136 0914,gerdau@mail.com
-100,Severstal,8 (876) 492-6068,severstal@gmx.com
-101,Metso Outotec,81347065394,metsooutotec@gmail.com
-102,FLSmidth,+7 214 315 75 96,flsmidth@gmx.com
-103,Weir Group,8 (946) 515-1087,weirgroup@yahoo.com
-104,KHD Humboldt Wedag,+7 (718) 513-1454,khdhumboldtwedag@gmx.com
-105,Claas,+7 (601) 762-92-62,claas@hotmail.com
-106,CNH Industrial,8 388 235 6291,cnhindustrial@qq.com
-107,AGCO,+7 357 142 5451,agco@163.com
-108,Kubota,+7 (669) 504-6282,kubota@163.com
-109,Yanmar,+76750673519,yanmar@outlook.com
-110,Deutz,8 815 267 83 67,deutz@outlook.com
-111,Perkins,+7 (503) 509-8677,perkins@hotmail.com
-112,MTU,+7 192 285 4824,mtu@hushmail.com
-113,Scania,+70070590026,scania@icloud.com
-114,MAN Truck & Bus,8 728 536 76 15,mantruck&bus@yahoo.com
+1,Bosch,8 (444) 632-3100,bosch@hushmail.com
+2,Siemens,+7 454 170 91 65,siemens@outlook.com
+3,General Electric,+7 (827) 744-91-68,generalelectric@protonmail.com
+4,Caterpillar,+79341541514,caterpillar@fastmail.com
+5,Honeywell,+71497663143,honeywell@rediffmail.com
+6,3M,+7 208 416 0730,3m@outlook.com
+7,ABB,+72886133140,abb@qq.com
+8,Schneider Electric,8 405 078 73 89,schneiderelectric@rediffmail.com
+9,Mitsubishi Heavy Industries,+7 651 133 6451,mitsubishiheavyindustries@yahoo.com
+10,Hitachi,85040253315,hitachi@zoho.com
+11,Toshiba,8 254 592 9104,toshiba@sina.com
+12,Hyundai Heavy Industries,+7 330 835 2821,hyundaiheavyindustries@gmail.com
+13,Doosan,+76401886053,doosan@protonmail.com
+14,ThyssenKrupp,+79827507655,thyssenkrupp@aol.com
+15,Rolls-Royce,8 (174) 851-4431,rolls-royce@mail.com
+16,Alstom,+7 (314) 171-74-82,alstom@sina.com
+17,Emerson Electric,+7 243 172 8759,emersonelectric@gmx.com
+18,Rockwell Automation,88145666707,rockwellautomation@icloud.com
+19,Cummins,8 (033) 137-1416,cummins@outlook.com
+20,John Deere,8 (402) 337-5880,johndeere@mail.com
+21,Volvo Group,81415812822,volvogroup@qq.com
+22,Daimler Truck,+70546709431,daimlertruck@sina.com
+23,Parker Hannifin,+7 (247) 531-88-12,parkerhannifin@yahoo.com
+24,Eaton,+78873686051,eaton@qq.com
+25,ZF Friedrichshafen,8 (428) 666-7566,zffriedrichshafen@rediffmail.com
+26,Continental,84227843585,continental@163.com
+27,Magna,8 580 377 77 47,magna@yahoo.com
+28,BorgWarner,81664056174,borgwarner@163.com
+29,Valeo,+7 993 125 00 30,valeo@sina.com
+30,Faurecia,8 (798) 531-2256,faurecia@zoho.com
+31,Mahle,8 (143) 704-18-38,mahle@zoho.com
+32,Knorr-Bremse,8 (471) 050-91-59,knorr-bremse@rediffmail.com
+33,Wabtec,+7 (363) 874-1651,wabtec@sina.com
+34,SKF,+7 209 544 35 40,skf@qq.com
+35,Timken,8 (742) 279-77-62,timken@naver.com
+36,NSK,8 (379) 384-7913,nsk@outlook.com
+37,NTN,8 (228) 602-0996,ntn@gmx.com
+38,JTEKT,8 (080) 737-50-23,jtekt@outlook.com
+39,Schaeffler,87162634948,schaeffler@sina.com
+40,GKN,+7 792 651 90 44,gkn@sina.com
+41,Sandvik,8 (592) 524-6456,sandvik@gmx.com
+42,Kennametal,81245187229,kennametal@sina.com
+43,Walter AG,+7 738 309 1402,walterag@qq.com
+44,Iscar,89722293952,iscar@qq.com
+45,Seco Tools,8 (951) 150-02-01,secotools@hotmail.com
+46,MAPAL,8 064 750 63 23,mapal@mail.com
+47,Dormer Pramet,+7 (410) 368-62-56,dormerpramet@gmail.com
+48,Gühring,+7 047 449 76 14,gühring@mail.com
+49,Liebherr,+7 (266) 622-99-98,liebherr@qq.com
+50,Komatsu,85095264520,komatsu@rediffmail.com
+51,Wärtsilä,8 (607) 400-2682,wärtsilä@hotmail.com
+52,MAN Energy Solutions,+7 (830) 867-48-83,manenergysolutions@yahoo.com
+53,Sulzer,8 406 781 0152,sulzer@qq.com
+54,Atlas Copco,8 763 685 3640,atlascopco@hushmail.com
+55,Ingersoll Rand,87390354230,ingersollrand@icloud.com
+56,Gardner Denver,+7 (748) 045-47-00,gardnerdenver@zoho.com
+57,Sullair,8 (415) 977-9119,sullair@gmail.com
+58,Kaeser,85470139160,kaeser@sina.com
+59,Grundfos,+7 (325) 329-4834,grundfos@protonmail.com
+60,KSB,+7 824 541 7225,ksb@naver.com
+61,Wilo,8 (468) 705-4658,wilo@aol.com
+62,Xylem,8 (103) 778-30-87,xylem@zoho.com
+63,Flowserve,+7 (852) 624-20-08,flowserve@tutanota.com
+64,ITT Inc,+7 843 409 0214,ittinc@yahoo.com
+65,Pentair,+7 738 408 6147,pentair@mail.ru
+66,Alfa Laval,+7 (563) 860-8340,alfalaval@outlook.com
+67,GEA,+7 (279) 805-7900,gea@tutanota.com
+68,SPX Flow,+7 (079) 739-53-52,spxflow@163.com
+69,SMC Corporation,8 657 327 12 69,smccorporation@outlook.com
+70,Festo,+7 548 299 46 79,festo@tutanota.com
+71,Pall,+72270363162,pall@naver.com
+72,Donaldson,81327566308,donaldson@hotmail.com
+73,Parker Hannifin,+7 176 008 3120,parkerhannifin@hotmail.com
+74,Swagelok,+74967945752,swagelok@fastmail.com
+75,Camozzi,+7 (413) 008-66-36,camozzi@protonmail.com
+76,Norgren,+7 000 230 1785,norgren@yandex.ru
+77,Rotork,+7 (764) 370-11-88,rotork@sina.com
+78,AUMA,+75246073794,auma@hotmail.com
+79,Siemens Healthineers,8 418 123 5481,siemenshealthineers@163.com
+80,Philips,8 055 722 9640,philips@qq.com
+81,GE Healthcare,8 (275) 194-5089,gehealthcare@fastmail.com
+82,Baker Hughes,+7 (103) 505-0823,bakerhughes@protonmail.com
+83,Halliburton,8 (560) 421-5070,halliburton@yandex.ru
+84,Schlumberger,8 (100) 139-39-50,schlumberger@mail.ru
+85,Weatherford,8 611 560 0528,weatherford@mail.ru
+86,National Oilwell Varco,8 793 646 17 50,nationaloilwellvarco@rediffmail.com
+87,Tenaris,+7 834 085 82 18,tenaris@gmx.com
+88,Vallourec,8 (860) 833-0554,vallourec@sina.com
+89,TMK,+7 (941) 657-2702,tmk@sina.com
+90,SSAB,85502259733,ssab@mail.com
+91,Voestalpine,87969016281,voestalpine@mail.ru
+92,ArcelorMittal,8 159 729 9536,arcelormittal@rediffmail.com
+93,Nippon Steel,+76115718506,nipponsteel@mail.ru
+94,POSCO,+7 (140) 021-49-46,posco@gmail.com
+95,Tata Steel,+7 900 025 6467,tatasteel@icloud.com
+96,Outokumpu,+7 928 119 2958,outokumpu@tutanota.com
+97,Aperam,+7 757 900 8130,aperam@protonmail.com
+98,Nucor,+7 497 120 17 19,nucor@tutanota.com
+99,Gerdau,+77836493329,gerdau@naver.com
+100,Severstal,+7 (926) 222-5653,severstal@hushmail.com
+101,Metso Outotec,+7 (105) 546-36-40,metsooutotec@fastmail.com
+102,FLSmidth,+78577064603,flsmidth@gmx.com
+103,Weir Group,+7 (824) 948-1659,weirgroup@icloud.com
+104,KHD Humboldt Wedag,8 (457) 021-14-55,khdhumboldtwedag@icloud.com
+105,Claas,+7 (851) 716-56-37,claas@hushmail.com
+106,CNH Industrial,8 (398) 180-5197,cnhindustrial@naver.com
+107,AGCO,8 789 189 97 82,agco@gmail.com
+108,Kubota,+7 865 703 59 93,kubota@mail.ru
+109,Yanmar,8 (169) 292-9949,yanmar@icloud.com
+110,Deutz,+7 (340) 692-22-60,deutz@icloud.com
+111,Perkins,+7 466 521 5309,perkins@fastmail.com
+112,MTU,8 (992) 970-92-01,mtu@gmail.com
+113,Scania,+7 782 594 91 45,scania@mail.com
+114,MAN Truck & Bus,8 390 046 55 28,mantruck&bus@mail.com

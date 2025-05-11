@@ -1,8 +1,7 @@
 import psycopg2
 from config import database_settings
-from datetime import datetime
 from re import match
-
+from datetime import datetime
 
 def datetime_transform(date: str):
     return f'{date[6:10]}-{date[3:5]}-{date[0:2]}T{date[11:13]}:{date[14:16]}:{date[17:19]}'
@@ -128,10 +127,31 @@ def insert_into_employee(data: str):
     conn.close()
     print(values)
 
+def insert_into_payment(data: str):
+    values = data.split("\n")
+    if len(values) != 4:
+        raise ValueError("Ошибка формата:\nid накладной\nдата и время платежа (ДД.ММ.ГГГГ ЧЧ.ММ.СС\nсумма платежа\nтип оплаты (Наличный расчет, Безналичный расчет)")
+    conn = get_connection()
+    cur = conn.cursor()
+    values[1] = datetime_transform(values[1])
+    if datetime.strptime(values[1], "%Y-%m-%dT%H:%M:%S") > datetime.now():
+        raise ValueError("Нельзя добавлять платежи в будущее")
+    cur.execute("SELECT invoice_id FROM Invoice WHERE invoice_id = %s", (values[0],))
+    if not cur.fetchone():
+        raise ValueError(f"Накладная с ID {values[0]} не найдена")
+    cur.execute("""
+        INSERT INTO payment (invoice_id, payment_date, amount, payment_method)
+        VALUES (%s, %s, %s, %s)
+    """, values)
+    conn.commit()
+    cur.close()
+    conn.close()
+    print(values)    
+
 def insert_into_invoice(data: str):
     values = data.split("\n")
     if len(values) != 4:
-        raise ValueError("Ошибка формата:\nдата (ДД.ММ.ГГГГ ЧЧ.ММ.СС)\nid покупателя\nid сотрудника\nстатус оплаты")
+        raise ValueError("Ошибка формата:\nдата и время оформления(ДД.ММ.ГГГГ ЧЧ.ММ.СС)\nid покупателя\nid сотрудника\nстатус оплаты (Оплачено, Не оплачено, Частично оплачено)")
     conn = get_connection()
     cur = conn.cursor()
     values[0] = datetime_transform(values[0])
@@ -337,18 +357,33 @@ def most_valuable_employee():
     conn.close()
     return colnames, rows
 
-def most_active_suppliers():
+def most_due():
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("""
         SELECT 
-            supplier_id AS id_поставщика,
-            (SELECT supplier_name FROM Supplier s WHERE s.supplier_id = p.supplier_id) AS название,
-            SUM(quantity_in_stock) AS всего_поставлено
-        FROM Part p
-        GROUP BY id_поставщика
-        ORDER BY всего_поставлено ASC
-        LIMIT 50
+            i.customer_id,
+            (SELECT customer_name || ', ' || city FROM Customer c WHERE c.customer_id = i.customer_id) AS customer_name,
+            COUNT(*) AS invoice_count,
+            SUM(i.total_amount) AS total_billed,
+            SUM(COALESCE((
+                SELECT SUM(p.amount)
+                FROM Payment p
+                WHERE p.invoice_id = i.invoice_id
+            ), 0)) AS total_paid,
+            SUM(i.total_amount - COALESCE((
+                SELECT SUM(p.amount)
+                FROM Payment p
+                WHERE p.invoice_id = i.invoice_id
+            ), 0)) AS total_due
+        FROM Invoice i
+        GROUP BY i.customer_id
+        HAVING SUM(i.total_amount - COALESCE((
+            SELECT SUM(p.amount)
+            FROM Payment p
+            WHERE p.invoice_id = i.invoice_id
+        ), 0)) > 0
+        ORDER BY total_due DESC
     """)
     rows = cur.fetchall()
     colnames = [desc[0] for desc in cur.description]
@@ -377,7 +412,6 @@ def most_useless_employees():
     return colnames, rows
 
 def get_sales_dynamics():
-    """Возвращает данные для графика продаж по месяцам"""
     query = """
         SELECT 
             TO_CHAR(invoice_date, 'YYYY-MM') AS month,
@@ -392,9 +426,32 @@ def get_sales_dynamics():
     cur.execute(query)
     return cur.fetchall()
 
+def get_payments_vs_debts():
+    query = """
+        SELECT 
+            (SELECT customer_name FROM Customer c WHERE c.customer_id = i.customer_id) AS customer_name,
+            SUM(COALESCE((
+                SELECT SUM(p.amount)
+                FROM Payment p
+                WHERE p.invoice_id = i.invoice_id
+            ), 0)) AS total_paid,
+            SUM(i.total_amount - COALESCE((
+                SELECT SUM(p.amount)
+                FROM Payment p
+                WHERE p.invoice_id = i.invoice_id
+            ), 0)) AS total_due
+        FROM Invoice i
+        GROUP BY i.customer_id
+        HAVING SUM(i.total_amount) > 0
+        ORDER BY SUM(i.total_amount) DESC
+        LIMIT 10
+    """
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute(query)
+    return cur.fetchall()
 
 def get_payment_status_stats():
-    """Возвращает статистику по статусам оплат"""
     query = """
         SELECT 
             payment_status,

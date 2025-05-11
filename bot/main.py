@@ -7,7 +7,7 @@ user_state = {}
 actions = ['Поиск записи', 'Добавить запись', 'Удалить запись', 
            'Посмотреть накладные за период', 'Графики аналитики', 
            'Самые активные покупатели', 'Самые продаваемые детали',
-            'Самые ценные сотрудники', 'Самые активные поставщики', 
+            'Самые ценные сотрудники', 'Задолженности', 
             'Какие детали пополнить']
 menu = types.ReplyKeyboardMarkup(resize_keyboard=True)
 for i in actions:
@@ -29,7 +29,7 @@ def handle_search_record(message):
 def handle_search_type(message):
     search_type(bot, message, menu, user_state)
 
-@bot.message_handler(func=lambda msg: msg.chat.id in user_state and user_state[msg.chat.id]['action'] == 'search_table' and msg.text in ['Накладная', 'Строка накладной', 'Поставщик', 'Покупатель', 'Деталь', 'Тип детали', 'Сотрудник'])
+@bot.message_handler(func=lambda msg: msg.chat.id in user_state and user_state[msg.chat.id]['action'] == 'search_table' and msg.text in ['Накладная', 'Строка накладной', 'Поставщик', 'Покупатель', 'Деталь', 'Тип детали', 'Сотрудник', 'Платеж'])
 def handle_search_table(message):
     search_table(bot, message, menu, user_state)
 
@@ -49,7 +49,7 @@ def handle_delete_record(message):
 def handle_return_back(message):
     return_back(bot, message, menu, user_state)
 
-@bot.message_handler(func=lambda msg: msg.text in ['Накладная', 'Строка накладной', 'Поставщик', 'Покупатель', 'Деталь', 'Тип детали', 'Сотрудник'])
+@bot.message_handler(func=lambda msg: msg.text in ['Накладная', 'Строка накладной', 'Поставщик', 'Покупатель', 'Деталь', 'Тип детали', 'Сотрудник', 'Платеж'])
 def handle_table_selection(message):
     table_selection(bot, message, menu, user_state)
 
@@ -85,15 +85,15 @@ def handle_ms_parts(message):
 def handle_mv_employees(message):
     mv_employee(bot, message, menu)
 
-@bot.message_handler(func=lambda msg: msg.text == 'Самые активные поставщики')
-def handle_ma_suppliers(message):
-    ma_suppliers(bot, message, menu)
+@bot.message_handler(func=lambda msg: msg.text == 'Задолженности')
+def handle_most_due(message):
+    mst_due(bot, message, menu)
 
 @bot.message_handler(func=lambda msg: msg.text == 'Графики аналитики')
 def handle_graphic_types(message):
     graphic_types(bot, message, user_state)
 
-@bot.message_handler(func=lambda msg: msg.chat.id in user_state and user_state[msg.chat.id]['action'] == 'analytics' and msg.text in ['Динамика продаж за год', 'Статусы оплат'])
+@bot.message_handler(func=lambda msg: msg.chat.id in user_state and user_state[msg.chat.id]['action'] == 'analytics' and msg.text in ['Динамика продаж за год', 'Статусы оплат', 'Оплаты и долги компаний'])
 def handle_plot_selection(message):
     plot_selection(bot, message, menu, user_state)
 
