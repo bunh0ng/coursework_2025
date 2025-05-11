@@ -97,7 +97,7 @@ def handle_graphic_types(message):
 def handle_plot_selection(message):
     plot_selection(bot, message, menu, user_state)
 
-@bot.message_handler(content_types=['text'])
+@bot.message_handler(content_types=['text', 'audio', 'photo', 'video', 'sticker', 'location', 'voice', 'document', 'contact'])
 def on_flood(message):
     bot.send_message(message.chat.id, 'Выберите действие:', reply_markup=menu)
 

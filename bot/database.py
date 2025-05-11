@@ -1,6 +1,7 @@
 import psycopg2
 from config import database_settings
-
+from datetime import datetime
+from re import match
 
 
 def datetime_transform(date: str):
@@ -64,10 +65,42 @@ def search_by_content(table_name, search_text):
 def delete_from_database(table: str, id: int):
     conn = get_connection()
     cur = conn.cursor()
+    if id <= 0:
+        raise ValueError("ID должен быть положительным числом")
+    cur.execute(f"""
+        SELECT MAX({table}_id) FROM {table}
+    """)
+    max_id = cur.fetchone()[0]
+    if id > max_id:
+        raise ValueError(f"Максимальный ID в таблице {table} - {max_id}")
+    cur.execute(f"""
+        SELECT COUNT(*) FROM {table}
+        WHERE {table}_id = %s
+    """, (id,))
+    if cur.fetchone()[0] == 0:
+        raise ValueError(f"Запись с ID {id} не найдена в таблице {table}")
+   
+    cur.execute("""
+        SELECT conrelid::regclass AS table_name, 
+               a.attname AS column_name
+        FROM pg_constraint c
+        JOIN pg_attribute a ON a.attnum = ANY(c.conkey) AND a.attrelid = c.conrelid
+        WHERE confrelid = %s::regclass
+        AND c.contype = 'f'
+    """, (table,))
+    foreign_tables = cur.fetchall()
+    for fk_table, fk_column in foreign_tables:
+        cur.execute(f"""
+            SELECT 1 FROM {fk_table} 
+            WHERE {fk_column} = %s 
+            LIMIT 1
+        """, (id,))
+        if cur.fetchone():
+            raise ValueError(f"Нельзя удалить: есть связанные записи в таблице {fk_table}")
     cur.execute(f"""
         DELETE FROM {table}
-        WHERE {table}_id = {id}
-    """)
+        WHERE {table}_id = %s
+    """, (id,))
     conn.commit()
     cur.close()
     conn.close()
@@ -77,7 +110,7 @@ def delete_from_database(table: str, id: int):
 def insert_into_employee(data: str):
     values = data.split("\n")
     if len(values) != 4:
-        raise ValueError("Формат:\nФИО\nдолжность\nдата найма (ДД.ММ.ГГГГ)\nвозраст")
+        raise ValueError("Ошибка формата:\nФИО\nдолжность\nдата найма (ДД.ММ.ГГГГ)\nвозраст")
     name = values[0].split()
     values.pop(0)
     values.insert(0, name[2])
@@ -98,7 +131,7 @@ def insert_into_employee(data: str):
 def insert_into_invoice(data: str):
     values = data.split("\n")
     if len(values) != 4:
-        raise ValueError("Формат:\nдата (ДД.ММ.ГГГГ ЧЧ.ММ.СС)\nid покупателя\nid сотрудника\nстатус оплаты")
+        raise ValueError("Ошибка формата:\nдата (ДД.ММ.ГГГГ ЧЧ.ММ.СС)\nid покупателя\nid сотрудника\nстатус оплаты")
     conn = get_connection()
     cur = conn.cursor()
     values[0] = datetime_transform(values[0])
@@ -121,7 +154,7 @@ def insert_into_invoice(data: str):
 def insert_into_invoiceline(data: str):
     values = data.split("\n")
     if len(values) != 3:
-        raise ValueError("Формат:\nid накладной\nid детали\nколичество")
+        raise ValueError("Ошибка формата:\nid накладной\nid детали\nколичество")
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("SELECT invoice_id FROM invoice WHERE invoice_id = %s", (values[0],))
@@ -146,7 +179,7 @@ def insert_into_invoiceline(data: str):
 def insert_into_part(data: str):
     values = data.split("\n")
     if len(values) != 7:
-        raise ValueError("Формат:\nматериал\nвес\nцена\nid типа\nколичество на складе\nid поставщика\nминимальный уровень запаса")
+        raise ValueError("Ошибка формата:\nматериал\nвес\nцена\nid типа\nколичество на складе\nid поставщика\nминимальный уровень запаса")
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("SELECT parttype_id FROM PartType WHERE parttype_id = %s", (values[3],))
@@ -171,7 +204,7 @@ def insert_into_part(data: str):
 def insert_into_partttype(data: str):
     values = data.split("\n")
     if len(values) != 2:
-        raise ValueError("Формат:\nназвание\nописание")
+        raise ValueError("Ошибка формата:\nназвание\nописание")
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("""
@@ -186,7 +219,7 @@ def insert_into_partttype(data: str):
 def insert_into_supplier(data: str):
     values = data.split("\n")
     if len(values) != 3:
-        raise ValueError("Формат:\nназвание\nтелефон\nпочта")
+        raise ValueError("Ошибка формата:\nназвание\nтелефон\nпочта")
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("""
@@ -201,7 +234,7 @@ def insert_into_supplier(data: str):
 def insert_into_customer(data: str):
     values = data.split("\n")
     if len(values) != 4:
-        raise ValueError("Формат:\nназвание\nгород\nтелефон\nпочта")
+        raise ValueError("Ошибка формата:\nназвание\nгород\nтелефон\nпочта")
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("""
@@ -378,16 +411,16 @@ def get_payment_status_stats():
 def invoices_for_period(data: str):
     from datetime import datetime
     values = data.split("\n")
-    if len(values) != 2:
-        raise ValueError("Формат: дата начала\nдата конца\nФормат даты: ДД.ММ.ГГГГ")
+    if len(values) != 2 or not match(r"^\d{2}\.\d{2}\.\d{4}$", values[0]) or not match(r"^\d{2}\.\d{2}\.\d{4}$", values[1]):
+        raise ValueError("Ошибка формата:\nдата начала (ДД.ММ.ГГГГ)\nдата конца (ДД.ММ.ГГГГ)")
     values = [date_transform(i) for i in values]
     if values[0] > values[1]:
         raise ValueError("Дата начала не может быть позже даты окончания")
     conn = get_connection()
     cur = conn.cursor()
-    if values[0] < "2020-05-11" or values[1] < "2020-05-11":
+    if datetime.strptime(values[0], "%Y-%m-%d") < datetime.strptime("2020-05-11", "%Y-%m-%d") or datetime.strptime(values[1], "%Y-%m-%d") < datetime.strptime("2020-05-11", "%Y-%m-%d"):
         raise ValueError("База содержит накладные только с 11.05.2020")
-    if values[0] > str(datetime.now()).split()[0] or values[1] > str(datetime.now()).split()[0]:
+    if datetime.strptime(values[0], "%Y-%m-%d") > datetime.now() or datetime.strptime(values[1], "%Y-%m-%d") > datetime.now():
         raise ValueError("Нельзя посмотреть накладные из будущего")
     cur.execute("""
         SELECT 
