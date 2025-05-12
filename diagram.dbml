@@ -1,0 +1,76 @@
+Table PartType {
+  parttype_id serial [primary key]
+  type_name varchar(100) [not null]
+  description text
+}
+
+Table Supplier {
+  supplier_id serial [primary key]
+  supplier_name varchar(100) [not null]
+  contact_phone varchar(50)
+  email varchar(50)
+}
+
+Table Part {
+  part_id serial [primary key]
+  material varchar(50) [not null]
+  weight decimal(10,2)
+  price decimal(10,2) [not null]
+  parttype_id serial [not null]
+  quantity_in_stock int [not null]
+  supplier_id serial [not null]
+  min_stock_level int [default: 0]
+  is_active boolean [default: true]
+}
+
+Table Customer {
+  customer_id serial [primary key]
+  customer_name varchar(100) [not null]
+  city varchar(50)
+  contact_phone varchar(50)
+  email varchar(50)
+}
+
+Table Employee {
+  employee_id serial [primary key]
+  first_name varchar(50) [not null]
+  second_name varchar(50) [not null]
+  last_name varchar(50) [not null]
+  position varchar(50)
+  hire_date date
+  age int [note: 'CHECK (age BETWEEN 18 AND 65)']
+}
+
+Table Invoice {
+  invoice_id serial [primary key]
+  invoice_date timestamp [not null]
+  total_amount decimal(12,2) [not null]
+  customer_id serial [not null]
+  employee_id serial [not null]
+  payment_status varchar(50) [default: 'Не оплачено', note: "CHECK (payment_status IN ('Оплачено', 'Не оплачено', 'Частично оплачено'))"]
+}
+
+Table InvoiceLine {
+  invoiceline_id serial [primary key]
+  invoice_id serial [not null]
+  part_id int [not null]
+  quantity int [not null, note: 'CHECK (quantity > 0)']
+  unit_price decimal(10,2) [not null]
+  line_total decimal(12,2) [not null]
+}
+
+Table Payment {
+  payment_id serial [primary key]
+  invoice_id int [not null]
+  payment_date date [not null]
+  amount decimal(12,2) [not null, note: 'CHECK (amount > 0)']
+  payment_method varchar(50) [default: 'Безналичный расчет', note: "CHECK (payment_method IN ('Наличный расчет', 'Безналичный расчет'))"]
+}
+
+Ref: Part.parttype_id > PartType.parttype_id
+Ref: Part.supplier_id > Supplier.supplier_id
+Ref: Invoice.customer_id > Customer.customer_id
+Ref: Invoice.employee_id > Employee.employee_id
+Ref: InvoiceLine.invoice_id > Invoice.invoice_id
+Ref: InvoiceLine.part_id > Part.part_id
+Ref: Payment.invoice_id > Invoice.invoice_id

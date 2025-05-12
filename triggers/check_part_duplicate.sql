@@ -2,7 +2,7 @@ CREATE OR REPLACE FUNCTION check_part_duplicate()
 RETURNS TRIGGER AS $$
 BEGIN
     -- Только если изменяется material или parttype_id
-    IF (TG_OP = 'INSERT') OR (TG_OP = 'UPDATE' AND 
+    IF (((TG_OP = 'INSERT') OR (TG_OP = 'UPDATE')) AND 
         (OLD.material IS DISTINCT FROM NEW.material OR 
          OLD.parttype_id IS DISTINCT FROM NEW.parttype_id)) THEN
         
@@ -20,3 +20,8 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_check_part_duplicate
+BEFORE INSERT ON part
+FOR EACH ROW
+EXECUTE FUNCTION check_part_duplicate();
