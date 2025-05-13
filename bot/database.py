@@ -20,11 +20,10 @@ def search_by_id(table_name, record_id):
     try:
         cur.execute(f"SELECT * FROM {table_name} WHERE {table_name.lower()}_id = %s", (record_id,))
         rows = cur.fetchall()
-        
+
         if not rows:
             return None
             
-        # Получаем названия столбцов
         colnames = [desc[0] for desc in cur.description]
         return colnames, rows
     finally:
@@ -273,15 +272,37 @@ def check_fill():
     cur = conn.cursor()
     cur.execute("""
         SELECT 
-            part_id AS id_детали, 
-            material AS материал, 
-            quantity_in_stock AS запасы_на_складе,
-            min_stock_level AS минимальный_уровень
+            part_id, 
+            material, 
+            quantity_in_stock,
+            min_stock_level
         FROM Part
         WHERE quantity_in_stock < min_stock_level
         ORDER BY min_stock_level - quantity_in_stock DESC
-        LIMIT 30
     """)
+    if not cur.fetchone():
+        raise ValueError("Ничего пополнять не нужно")
+    rows = cur.fetchall()
+    colnames = [desc[0] for desc in cur.description]
+    cur.close()
+    conn.close()
+    return colnames, rows
+
+def check_full_fill():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT 
+            part_id, 
+            material, 
+            quantity_in_stock,
+            min_stock_level
+        FROM Part
+        WHERE quantity_in_stock < min_stock_level
+        ORDER BY min_stock_level - quantity_in_stock DESC
+    """)
+    if not cur.fetchone():
+        raise ValueError("Ничего пополнять не нужно")
     rows = cur.fetchall()
     colnames = [desc[0] for desc in cur.description]
     cur.close()
@@ -292,13 +313,13 @@ def most_valuable_customers():
     conn = get_connection()
     cur = conn.cursor()
     cur.execute("""
-        SELECT customer_id AS id_поставщика,
-            (SELECT customer_name FROM Customer WHERE Customer.customer_id = Invoice.customer_id) AS название,
-            COUNT(*) AS продажи
+        SELECT customer_id,
+            (SELECT customer_name FROM Customer c WHERE c.customer_id = Invoice.customer_id) AS customer,
+            COUNT(*) AS sold
         FROM Invoice
         WHERE invoice_date >= current_date - INTERVAL '1 month'
-        GROUP BY id_поставщика
-        ORDER BY продажи DESC
+        GROUP BY customer_id
+        ORDER BY sold DESC
         LIMIT 50
     """)
     rows = cur.fetchall()
@@ -312,17 +333,17 @@ def most_sold_parts():
     cur = conn.cursor()
     cur.execute("""
         SELECT 
-            l.part_id AS id_детали,
-            (SELECT p.material FROM Part p WHERE p.part_id = l.part_id) AS материал,
+            l.part_id,
+            (SELECT p.material FROM Part p WHERE p.part_id = l.part_id),
             (SELECT type_name 
             FROM PartType pt 
             WHERE pt.parttype_id = (
                 SELECT parttype_id FROM Part p WHERE p.part_id = l.part_id
-            )) AS название_типа,
-            SUM(l.line_total) AS сумма
+            )),
+            SUM(l.line_total) AS summ
         FROM InvoiceLine l
         GROUP BY l.part_id
-        ORDER BY сумма DESC
+        ORDER BY summ DESC
         LIMIT 50
     """)
     rows = cur.fetchall()
@@ -337,18 +358,18 @@ def most_valuable_employee():
     cur.execute("""
         WITH EmployeeSales AS (
             SELECT
-                e.second_name || ' ' || e.first_name || ' ' || e.last_name AS полное_имя,
-                (SELECT COUNT(*) FROM Invoice WHERE employee_id = e.employee_id) AS всего_накладных,
-                ROUND((SELECT SUM(total_amount) FROM Invoice WHERE employee_id = e.employee_id), 2) AS всего_заработано
+                e.second_name || ' ' || e.first_name || ' ' || e.last_name AS full name,
+                (SELECT COUNT(*) FROM Invoice WHERE employee_id = e.employee_id) AS invoices,
+                ROUND((SELECT SUM(total_amount) FROM Invoice WHERE employee_id = e.employee_id), 2) AS 
             FROM Employee e
         )
         SELECT 
-            полное_имя,
-            всего_накладных,
-            ROUND(всего_заработано / NULLIF(всего_накладных, 0), 2) AS средний_чек,
-            всего_заработано
+            full_name,
+            invoices_total,
+            ROUND(total / NULLIF(invoices, 0), 2) AS average,
+            total
         FROM EmployeeSales
-        ORDER BY всего_заработано DESC
+        ORDER BY total DESC
         LIMIT 10
     """)
     rows = cur.fetchall()
@@ -391,25 +412,6 @@ def most_due():
     conn.close()
     return colnames, rows
 
-def most_useless_employees():
-    conn = get_connection()
-    cur = conn.cursor()
-    cur.execute("""
-        SELECT 
-            employee_id AS id_сотрудника,
-            (SELECT second_name || ' ' || first_name || ' ' || last_name FROM Employee e WHERE e.employee_id = i.employee_id) AS полное_имя,
-            COUNT(*) AS число_накладных
-        FROM Invoice i
-        WHERE invoice_date >= CURRENT_DATE - INTERVAL '1 month'
-        GROUP BY id_сотрудника
-        ORDER BY число_накладных ASC
-        LIMIT 10
-    """)
-    rows = cur.fetchall()
-    colnames = [desc[0] for desc in cur.description]
-    cur.close()
-    conn.close()
-    return colnames, rows
 
 def get_sales_dynamics():
     query = """
@@ -481,11 +483,11 @@ def invoices_for_period(data: str):
         raise ValueError("Нельзя посмотреть накладные из будущего")
     cur.execute("""
         SELECT 
-            i.invoice_id AS id_накладной,
-            i.invoice_date AS дата_оформления,
-            (SELECT customer_name || ', ' || city FROM Customer c WHERE c.customer_id = i.customer_id) AS компания_покупатель,
-            i.total_amount AS общая_стоимость,
-            i.payment_status AS статус_оплаты
+            i.invoice_id,
+            i.invoice_date,
+            (SELECT customer_name || ', ' || city FROM Customer c WHERE c.customer_id = i.customer_id) AS company_name,
+            i.total_amount,
+            i.payment_status
         FROM Invoice i
         WHERE invoice_date BETWEEN %s AND %s
         ORDER BY invoice_date;
