@@ -1,0 +1,591 @@
+
+
+--- Файл: ./triggers\check_customer_duplicate.sql ---
+
+CREATE OR REPLACE FUNCTION check_customer_duplicate()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Только если изменяется material или customertype_id
+    IF (((TG_OP = 'INSERT') OR (TG_OP = 'UPDATE')) AND 
+        (OLD.customer_name IS DISTINCT FROM NEW.customer_name OR 
+         OLD.city IS DISTINCT FROM NEW.city)) THEN
+        
+        IF EXISTS (
+            SELECT 1 FROM customer
+            WHERE customer_name = NEW.customer_name
+              AND city = NEW.city
+              AND customer_id != NEW.customer_id
+        ) THEN
+            RAISE EXCEPTION 'Покупатель с названием "%" из города % уже существует', 
+                NEW.customer_name, NEW.city;
+        END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_check_customer_duplicate
+BEFORE INSERT ON customer
+FOR EACH ROW
+EXECUTE FUNCTION check_customer_duplicate();
+
+--- Файл: ./triggers\check_hire_age.sql ---
+
+CREATE OR REPLACE FUNCTION check_hire_age()
+RETURNS TRIGGER AS $$
+DECLARE
+    hire_year INT;
+    current_year INT;
+    age_at_hire INT;
+BEGIN
+    -- Получаем текущий год и год найма
+    current_year := EXTRACT(YEAR FROM CURRENT_DATE);
+    hire_year := EXTRACT(YEAR FROM NEW.hire_date);
+    
+    -- Вычисляем примерный возраст на момент найма
+    IF hire_year = current_year THEN
+        age_at_hire := NEW.age;  -- Если наняли в этом году, возраст тот же
+    ELSE
+        age_at_hire := NEW.age - (current_year - hire_year);
+    END IF;
+    
+    -- Проверяем, был ли сотрудник совершеннолетним на момент найма
+    IF age_at_hire < 18 THEN
+        RAISE EXCEPTION 
+            'Сотрудник не мог быть нанят в % году в возрасте % лет (должно быть ≥18)',
+            hire_year, age_at_hire;
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Триггер для INSERT (добавление нового сотрудника)
+CREATE TRIGGER trg_check_hire_age_insert
+BEFORE INSERT ON Employee
+FOR EACH ROW
+EXECUTE FUNCTION check_hire_age();
+
+-- Триггер для UPDATE (если изменили hire_date или age)
+CREATE TRIGGER trg_check_hire_age_update
+BEFORE UPDATE ON Employee
+FOR EACH ROW
+WHEN (OLD.hire_date IS DISTINCT FROM NEW.hire_date OR OLD.age IS DISTINCT FROM NEW.age)
+EXECUTE FUNCTION check_hire_age();
+
+--- Файл: ./triggers\check_parttype_duplicate.sql ---
+
+CREATE OR REPLACE FUNCTION check_parttype_duplicate()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Только если изменяется material или parttypetype_id
+    IF (((TG_OP = 'INSERT') OR (TG_OP = 'UPDATE')) AND 
+        (OLD.type_name IS DISTINCT FROM NEW.type_name)) THEN
+        
+        IF EXISTS (
+            SELECT 1 FROM parttype
+            WHERE type_name = NEW.type_name
+              AND parttype_id != NEW.parttype_id
+        ) THEN
+            RAISE EXCEPTION 'Тип с названием "%" уже существует', 
+                NEW.type_name;
+        END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_check_parttype_duplicate
+BEFORE INSERT ON parttype
+FOR EACH ROW
+EXECUTE FUNCTION check_parttype_duplicate();
+
+
+--- Файл: ./triggers\check_part_duplicate.sql ---
+
+CREATE OR REPLACE FUNCTION check_part_duplicate()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Только если изменяется material или parttype_id
+    IF (((TG_OP = 'INSERT') OR (TG_OP = 'UPDATE')) AND 
+        (OLD.material IS DISTINCT FROM NEW.material OR 
+         OLD.parttype_id IS DISTINCT FROM NEW.parttype_id)) THEN
+        
+        IF EXISTS (
+            SELECT 1 FROM Part
+            WHERE material = NEW.material
+              AND parttype_id = NEW.parttype_id
+              AND part_id != NEW.part_id
+        ) THEN
+            RAISE EXCEPTION 'Деталь с материалом "%" и ID типа % уже существует', 
+                NEW.material, NEW.parttype_id;
+        END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_check_part_duplicate
+BEFORE INSERT ON part
+FOR EACH ROW
+EXECUTE FUNCTION check_part_duplicate();
+
+
+--- Файл: ./triggers\check_stock_level.sql ---
+
+CREATE OR REPLACE FUNCTION check_stock_level()
+RETURNS TRIGGER AS $$
+DECLARE
+    current_stock INT;
+BEGIN
+    current_stock := (SELECT quantity_in_stock FROM Part WHERE part_id = NEW.part_id);
+    
+    IF current_stock < NEW.quantity THEN
+        RAISE EXCEPTION 'Недостаточно товара на складе. Доступно: %, запрошено: %', 
+              current_stock, NEW.quantity;
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER before_invoice_line_insert
+BEFORE INSERT ON InvoiceLine
+FOR EACH ROW
+EXECUTE FUNCTION check_stock_level();
+
+--- Файл: ./triggers\check_supplier_duplicate.sql ---
+
+CREATE OR REPLACE FUNCTION check_supplier_duplicate()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Только если изменяется material или parttype_id
+    IF (((TG_OP = 'INSERT') OR (TG_OP = 'UPDATE')) AND 
+        (OLD.contact_phone IS DISTINCT FROM NEW.contact_phone)) THEN
+        
+        IF EXISTS (
+            SELECT 1 FROM supplier
+            WHERE contact_phone = NEW.contact_phone
+              AND supplier_id != NEW.supplier_id
+        ) THEN
+            RAISE EXCEPTION 'Номер телефона "%" уже занят', 
+                NEW.contact_phone;
+        END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_check_supplier_duplicate
+BEFORE INSERT ON supplier
+FOR EACH ROW
+EXECUTE FUNCTION check_supplier_duplicate();
+
+--- Файл: ./triggers\decrease_stock_level.sql ---
+
+CREATE OR REPLACE FUNCTION decrease_stock_on_invoiceline_insert()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE Part
+    SET quantity_in_stock = quantity_in_stock - NEW.quantity
+    WHERE part_id = NEW.part_id;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_decrease_stock_on_invoiceline_insert
+AFTER INSERT ON InvoiceLine
+FOR EACH ROW
+EXECUTE FUNCTION decrease_stock_on_invoiceline_insert();
+
+
+--- Файл: ./triggers\prevent_early_payment.sql ---
+
+CREATE OR REPLACE FUNCTION prevent_early_payment()
+RETURNS TRIGGER AS $$
+DECLARE
+    invoice_datee TIMESTAMP;
+BEGIN
+    SELECT invoice_date INTO invoice_datee
+    FROM Invoice
+    WHERE invoice_id = NEW.invoice_id;
+
+    IF NEW.payment_date < invoice_datee THEN
+        RAISE EXCEPTION 'Дата платежа не может быть раньше даты накладной';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_prevent_early_payment
+BEFORE INSERT ON Payment
+FOR EACH ROW
+EXECUTE FUNCTION prevent_early_payment();
+
+
+--- Файл: ./triggers\prevent_overpayment.sql ---
+
+CREATE OR REPLACE FUNCTION prevent_overpayment()
+RETURNS TRIGGER AS $$
+DECLARE
+    current_paid DECIMAL := 0;
+    invoice_total DECIMAL := 0;
+BEGIN
+    -- Сумма уже внесённых платежей
+    SELECT COALESCE(SUM(amount), 0)
+    INTO current_paid
+    FROM Payment
+    WHERE invoice_id = NEW.invoice_id;
+
+    -- Общая сумма накладной
+    SELECT total_amount
+    INTO invoice_total
+    FROM Invoice
+    WHERE invoice_id = NEW.invoice_id;
+
+    -- Если платеж превысит допустимую сумму
+    IF current_paid + NEW.amount > invoice_total THEN
+        RAISE EXCEPTION 'Платёж приведет к переплате по накладной';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_prevent_overpayment
+BEFORE INSERT ON Payment
+FOR EACH ROW
+EXECUTE FUNCTION prevent_overpayment();
+
+
+--- Файл: ./triggers\prevent_payment_on_paid.sql ---
+
+CREATE OR REPLACE FUNCTION prevent_payment_on_paid()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF (
+        SELECT COALESCE(SUM(amount), 0)
+        FROM Payment
+        WHERE invoice_id = NEW.invoice_id
+    ) >= (
+        SELECT total_amount
+        FROM Invoice
+        WHERE invoice_id = NEW.invoice_id
+    ) THEN
+        RAISE EXCEPTION 'Накладная уже полностью оплачена';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_prevent_paymenton_paid
+BEFORE INSERT ON Payment
+FOR EACH ROW
+EXECUTE FUNCTION prevent_payment_on_paid();
+
+
+--- Файл: ./triggers\reuse_customer_id.sql ---
+
+CREATE OR REPLACE FUNCTION reuse_customer_id()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Пытаемся использовать минимальный свободный ID
+    SELECT MIN(customer_id) + 1 INTO NEW.customer_id
+    FROM customer p1
+    WHERE NOT EXISTS (
+        SELECT 1 FROM customer p2 WHERE p2.customer_id = p1.customer_id + 1
+    );
+    
+    -- Если не нашли, используем стандартное поведение
+    IF NEW.customer_id IS NULL THEN
+        NEW.customer_id := nextval('customer_customer_id_seq');
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_reuse_customer_id
+BEFORE INSERT ON customer
+FOR EACH ROW
+EXECUTE FUNCTION reuse_customer_id();
+
+--- Файл: ./triggers\reuse_employee_id.sql ---
+
+CREATE OR REPLACE FUNCTION reuse_employee_id()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Пытаемся использовать минимальный свободный ID
+    SELECT MIN(employee_id) + 1 INTO NEW.employee_id
+    FROM employee p1
+    WHERE NOT EXISTS (
+        SELECT 1 FROM employee p2 WHERE p2.employee_id = p1.employee_id + 1
+    );
+    
+    -- Если не нашли, используем стандартное поведение
+    IF NEW.employee_id IS NULL THEN
+        NEW.employee_id := nextval('employee_employee_id_seq');
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_reuse_employee_id
+BEFORE INSERT ON employee
+FOR EACH ROW
+EXECUTE FUNCTION reuse_employee_id();
+
+--- Файл: ./triggers\reuse_invoiceline_id.sql ---
+
+CREATE OR REPLACE FUNCTION reuse_invoiceline_id()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Пытаемся использовать минимальный свободный ID
+    SELECT MIN(invoiceline_id) + 1 INTO NEW.invoiceline_id
+    FROM invoiceline p1
+    WHERE NOT EXISTS (
+        SELECT 1 FROM invoiceline p2 WHERE p2.invoiceline_id = p1.invoiceline_id + 1
+    );
+    
+    -- Если не нашли, используем стандартное поведение
+    IF NEW.invoiceline_id IS NULL THEN
+        NEW.invoiceline_id := nextval('invoiceline_invoiceline_id_seq');
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_reuse_invoiceline_id
+BEFORE INSERT ON invoiceline
+FOR EACH ROW
+EXECUTE FUNCTION reuse_invoiceline_id();
+
+--- Файл: ./triggers\reuse_invoice_id.sql ---
+
+CREATE OR REPLACE FUNCTION reuse_invoice_id()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Пытаемся использовать минимальный свободный ID
+    SELECT MIN(invoice_id) + 1 INTO NEW.invoice_id
+    FROM invoice p1
+    WHERE NOT EXISTS (
+        SELECT 1 FROM invoice p2 WHERE p2.invoice_id = p1.invoice_id + 1
+    );
+    
+    -- Если не нашли, используем стандартное поведение
+    IF NEW.invoice_id IS NULL THEN
+        NEW.invoice_id := nextval('invoice_invoice_id_seq');
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_reuse_invoice_id
+BEFORE INSERT ON invoice
+FOR EACH ROW
+EXECUTE FUNCTION reuse_invoice_id();
+
+--- Файл: ./triggers\reuse_parttype_id.sql ---
+
+CREATE OR REPLACE FUNCTION reuse_parttype_id()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Пытаемся использовать минимальный свободный ID
+    SELECT MIN(parttype_id) + 1 INTO NEW.parttype_id
+    FROM parttype p1
+    WHERE NOT EXISTS (
+        SELECT 1 FROM parttype p2 WHERE p2.parttype_id = p1.parttype_id + 1
+    );
+    
+    -- Если не нашли, используем стандартное поведение
+    IF NEW.parttype_id IS NULL THEN
+        NEW.parttype_id := nextval('parttype_parttype_id_seq');
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_reuse_parttype_id
+BEFORE INSERT ON parttype
+FOR EACH ROW
+EXECUTE FUNCTION reuse_parttype_id();
+
+--- Файл: ./triggers\reuse_part_id.sql ---
+
+CREATE OR REPLACE FUNCTION reuse_part_id()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Пытаемся использовать минимальный свободный ID
+    SELECT MIN(part_id) + 1 INTO NEW.part_id
+    FROM Part p1
+    WHERE NOT EXISTS (
+        SELECT 1 FROM Part p2 WHERE p2.part_id = p1.part_id + 1
+    );
+    
+    -- Если не нашли, используем стандартное поведение
+    IF NEW.part_id IS NULL THEN
+        NEW.part_id := nextval('part_part_id_seq');
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_reuse_part_id
+BEFORE INSERT ON Part
+FOR EACH ROW
+EXECUTE FUNCTION reuse_part_id();
+
+--- Файл: ./triggers\reuse_payment_id.sql ---
+
+CREATE OR REPLACE FUNCTION reuse_payment_id()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Пытаемся использовать минимальный свободный ID
+    SELECT MIN(payment_id) + 1 INTO NEW.payment_id
+    FROM payment p1
+    WHERE NOT EXISTS (
+        SELECT 1 FROM payment p2 WHERE p2.payment_id = p1.payment_id + 1
+    );
+    
+    -- Если не нашли, используем стандартное поведение
+    IF NEW.payment_id IS NULL THEN
+        NEW.payment_id := nextval('payment_payment_id_seq');
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_reuse_payment_id
+BEFORE INSERT ON payment
+FOR EACH ROW
+EXECUTE FUNCTION reuse_payment_id();
+
+--- Файл: ./triggers\reuse_supplier_id.sql ---
+
+CREATE OR REPLACE FUNCTION reuse_supplier_id()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Пытаемся использовать минимальный свободный ID
+    SELECT MIN(supplier_id) + 1 INTO NEW.supplier_id
+    FROM supplier p1
+    WHERE NOT EXISTS (
+        SELECT 1 FROM supplier p2 WHERE p2.supplier_id = p1.supplier_id + 1
+    );
+    
+    -- Если не нашли, используем стандартное поведение
+    IF NEW.supplier_id IS NULL THEN
+        NEW.supplier_id := nextval('supplier_supplier_id_seq');
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_reuse_supplier_id
+BEFORE INSERT ON supplier
+FOR EACH ROW
+EXECUTE FUNCTION reuse_supplier_id();
+
+--- Файл: ./triggers\update_active_status.sql ---
+
+CREATE OR REPLACE FUNCTION update_part_active_status()
+RETURNS TRIGGER AS $$
+DECLARE 
+    min_stock INT;
+BEGIN
+    SELECT min_stock_level INTO min_stock
+    FROM Part
+    WHERE part_id = NEW.part_id;
+
+    IF NEW.quantity_in_stock < min_stock THEN
+        NEW.is_active := FALSE;
+    ELSE
+        NEW.is_active := TRUE;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_update_part_active_status
+BEFORE UPDATE OF quantity_in_stock ON Part
+FOR EACH ROW
+EXECUTE FUNCTION update_part_active_status();
+
+
+--- Файл: ./triggers\update_invoice_payment_status.sql ---
+
+CREATE OR REPLACE FUNCTION update_invoice_payment_status()
+RETURNS TRIGGER AS $$
+DECLARE
+    total_paid DECIMAL := 0;
+    total_due DECIMAL := 0;
+BEGIN
+    SELECT COALESCE(SUM(amount), 0) INTO total_paid
+    FROM Payment
+    WHERE invoice_id = NEW.invoice_id;
+
+    SELECT total_amount INTO total_due
+    FROM Invoice
+    WHERE invoice_id = NEW.invoice_id;
+
+    UPDATE Invoice
+    SET payment_status = CASE
+        WHEN total_paid = 0 THEN 'Неоплачено'
+        WHEN total_paid < total_due THEN 'Частично оплачено'
+        WHEN total_paid >= total_due THEN 'Оплачено'
+    END
+    WHERE invoice_id = NEW.invoice_id;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_update_invoice_status
+AFTER INSERT ON Payment
+FOR EACH ROW
+EXECUTE FUNCTION update_invoice_payment_status();
+
+
+--- Файл: ./triggers\update_invoice_total.sql ---
+
+CREATE OR REPLACE FUNCTION update_invoice_total()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE Invoice
+    SET total_amount = (
+        SELECT COALESCE(SUM(line_total), 0)
+        FROM InvoiceLine
+        WHERE invoice_id = NEW.invoice_id
+    )
+    WHERE invoice_id = NEW.invoice_id;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_invoiceline_insert
+AFTER INSERT ON InvoiceLine
+FOR EACH ROW
+EXECUTE FUNCTION update_invoice_total();
+
+CREATE TRIGGER trg_invoiceline_update
+AFTER UPDATE ON InvoiceLine
+FOR EACH ROW
+EXECUTE FUNCTION update_invoice_total();
+
+CREATE TRIGGER trg_invoiceline_delete
+AFTER DELETE ON InvoiceLine
+FOR EACH ROW
+EXECUTE FUNCTION update_invoice_total();

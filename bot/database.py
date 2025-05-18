@@ -279,6 +279,7 @@ def check_fill():
         FROM Part
         WHERE quantity_in_stock < min_stock_level
         ORDER BY min_stock_level - quantity_in_stock DESC
+        LIMIT 10
     """)
     if not cur.fetchone():
         raise ValueError("Ничего пополнять не нужно")
@@ -309,6 +310,24 @@ def check_full_fill():
     conn.close()
     return colnames, rows
 
+def all_most_valuable_customers():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT customer_id,
+            (SELECT customer_name FROM Customer c WHERE c.customer_id = Invoice.customer_id) AS customer,
+            COUNT(*) AS sold
+        FROM Invoice
+        WHERE invoice_date >= current_date - INTERVAL '1 month'
+        GROUP BY customer_id
+        ORDER BY sold DESC
+    """)
+    rows = cur.fetchall()
+    colnames = [desc[0] for desc in cur.description]
+    cur.close()
+    conn.close()
+    return colnames, rows
+
 def most_valuable_customers():
     conn = get_connection()
     cur = conn.cursor()
@@ -320,7 +339,31 @@ def most_valuable_customers():
         WHERE invoice_date >= current_date - INTERVAL '1 month'
         GROUP BY customer_id
         ORDER BY sold DESC
-        LIMIT 50
+        LIMIT 10
+    """)
+    rows = cur.fetchall()
+    colnames = [desc[0] for desc in cur.description]
+    cur.close()
+    conn.close()
+    return colnames, rows
+
+def most_sold_parts500():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT 
+            l.part_id,
+            (SELECT p.material FROM Part p WHERE p.part_id = l.part_id),
+            (SELECT type_name 
+            FROM PartType pt 
+            WHERE pt.parttype_id = (
+                SELECT parttype_id FROM Part p WHERE p.part_id = l.part_id
+            )),
+            SUM(l.line_total) AS summ
+        FROM InvoiceLine l
+        GROUP BY l.part_id
+        ORDER BY summ DESC
+        LIMIT 500
     """)
     rows = cur.fetchall()
     colnames = [desc[0] for desc in cur.description]
@@ -344,7 +387,7 @@ def most_sold_parts():
         FROM InvoiceLine l
         GROUP BY l.part_id
         ORDER BY summ DESC
-        LIMIT 50
+        LIMIT 10
     """)
     rows = cur.fetchall()
     colnames = [desc[0] for desc in cur.description]
@@ -358,19 +401,78 @@ def most_valuable_employee():
     cur.execute("""
         WITH EmployeeSales AS (
             SELECT
-                e.second_name || ' ' || e.first_name || ' ' || e.last_name AS full name,
-                (SELECT COUNT(*) FROM Invoice WHERE employee_id = e.employee_id) AS invoices,
-                ROUND((SELECT SUM(total_amount) FROM Invoice WHERE employee_id = e.employee_id), 2) AS 
+                e.second_name || ' ' || e.first_name || ' ' || e.last_name AS full_name,
+                (SELECT COUNT(*) FROM Invoice WHERE employee_id = e.employee_id) AS invoices_total,
+                ROUND((SELECT SUM(total_amount) FROM Invoice WHERE employee_id = e.employee_id), 2) AS total_amount 
             FROM Employee e
         )
         SELECT 
             full_name,
             invoices_total,
-            ROUND(total / NULLIF(invoices, 0), 2) AS average,
-            total
+            ROUND(total_amount / NULLIF(invoices_total, 0), 2) AS average,
+            total_amount
         FROM EmployeeSales
-        ORDER BY total DESC
+        ORDER BY total_amount DESC
         LIMIT 10
+    """)
+    rows = cur.fetchall()
+    colnames = [desc[0] for desc in cur.description]
+    cur.close()
+    conn.close()
+    return colnames, rows
+
+def all_most_valuable_employees():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        WITH EmployeeSales AS (
+            SELECT
+                e.second_name || ' ' || e.first_name || ' ' || e.last_name AS full_name,
+                (SELECT COUNT(*) FROM Invoice WHERE employee_id = e.employee_id) AS invoices_total,
+                ROUND((SELECT SUM(total_amount) FROM Invoice WHERE employee_id = e.employee_id), 2) AS total_amount
+            FROM Employee e
+        )
+        SELECT 
+            full_name,
+            invoices_total,
+            ROUND(total_amount / NULLIF(invoices_total, 0), 2) AS average,
+            total_amount
+        FROM EmployeeSales
+        ORDER BY total_amount DESC
+    """)
+    rows = cur.fetchall()
+    colnames = [desc[0] for desc in cur.description]
+    cur.close()
+    conn.close()
+    return colnames, rows
+
+def all_most_due():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT 
+            i.customer_id,
+            (SELECT customer_name || ', ' || city FROM Customer c WHERE c.customer_id = i.customer_id) AS customer_name,
+            COUNT(*) AS invoice_count,
+            SUM(i.total_amount) AS total_billed,
+            SUM(COALESCE((
+                SELECT SUM(p.amount)
+                FROM Payment p
+                WHERE p.invoice_id = i.invoice_id
+            ), 0)) AS total_paid,
+            SUM(i.total_amount - COALESCE((
+                SELECT SUM(p.amount)
+                FROM Payment p
+                WHERE p.invoice_id = i.invoice_id
+            ), 0)) AS total_due
+        FROM Invoice i
+        GROUP BY i.customer_id
+        HAVING SUM(i.total_amount - COALESCE((
+            SELECT SUM(p.amount)
+            FROM Payment p
+            WHERE p.invoice_id = i.invoice_id
+        ), 0)) > 0
+        ORDER BY total_due DESC
     """)
     rows = cur.fetchall()
     colnames = [desc[0] for desc in cur.description]
@@ -405,6 +507,7 @@ def most_due():
             WHERE p.invoice_id = i.invoice_id
         ), 0)) > 0
         ORDER BY total_due DESC
+        LIMIT 10
     """)
     rows = cur.fetchall()
     colnames = [desc[0] for desc in cur.description]
@@ -490,7 +593,8 @@ def invoices_for_period(data: str):
             i.payment_status
         FROM Invoice i
         WHERE invoice_date BETWEEN %s AND %s
-        ORDER BY invoice_date;
+        ORDER BY invoice_date
+        LIMIT 10
     """, values)
     rows = cur.fetchall()
     colnames = [desc[0] for desc in cur.description]
@@ -498,3 +602,33 @@ def invoices_for_period(data: str):
     conn.close()
     return colnames, rows
 
+def all_invoices_for_period(data: str):
+    from datetime import datetime
+    values = data.split("\n")
+    if len(values) != 2 or not match(r"^\d{2}\.\d{2}\.\d{4}$", values[0]) or not match(r"^\d{2}\.\d{2}\.\d{4}$", values[1]):
+        raise ValueError("Ошибка формата:\nдата начала (ДД.ММ.ГГГГ)\nдата конца (ДД.ММ.ГГГГ)")
+    values = [date_transform(i) for i in values]
+    if values[0] > values[1]:
+        raise ValueError("Дата начала не может быть позже даты окончания")
+    conn = get_connection()
+    cur = conn.cursor()
+    if datetime.strptime(values[0], "%Y-%m-%d") < datetime.strptime("2020-05-11", "%Y-%m-%d") or datetime.strptime(values[1], "%Y-%m-%d") < datetime.strptime("2020-05-11", "%Y-%m-%d"):
+        raise ValueError("База содержит накладные только с 11.05.2020")
+    if datetime.strptime(values[0], "%Y-%m-%d") > datetime.now() or datetime.strptime(values[1], "%Y-%m-%d") > datetime.now():
+        raise ValueError("Нельзя посмотреть накладные из будущего")
+    cur.execute("""
+        SELECT 
+            i.invoice_id,
+            i.invoice_date,
+            (SELECT customer_name || ', ' || city FROM Customer c WHERE c.customer_id = i.customer_id) AS company_name,
+            i.total_amount,
+            i.payment_status
+        FROM Invoice i
+        WHERE invoice_date BETWEEN %s AND %s
+        ORDER BY invoice_date;
+    """, values)
+    rows = cur.fetchall()
+    colnames = [desc[0] for desc in cur.description]
+    cur.close()
+    conn.close()
+    return colnames, rows

@@ -42,7 +42,7 @@ CREATE TABLE Employee (
     last_name VARCHAR(50) NOT NULL,
     position VARCHAR(50),
     hire_date DATE,
-   age INT CHECK (age BETWEEN 18 AND 65)
+    age INT CHECK (age BETWEEN 18 AND 65)
 );
 copy employee FROM 'C:/tables/employees.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',', ENCODING 'UTF8');
 
@@ -68,7 +68,7 @@ copy invoiceline FROM 'C:/tables/invoice_lines.csv' WITH (FORMAT csv, HEADER tru
 
 CREATE TABLE Payment (
     payment_id SERIAL PRIMARY KEY,
-    invoice_id INT REFERENCES Invoice(invoice_id),
+    invoice_id SERIAL REFERENCES Invoice(invoice_id),
     payment_date DATE NOT NULL,
     amount DECIMAL(12,2) NOT NULL CHECK (amount > 0),
     payment_method VARCHAR(50) CHECK (payment_method IN ('Наличный расчет', 'Безналичный расчет')) DEFAULT 'Безналичный расчет'

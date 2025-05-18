@@ -1,3 +1,3 @@
 from docx2pdf import convert
 
-convert('Курсовой_отчет_по_БД.docx', 'Курсовой_отчет_по_БД.pdf')
+convert('Курсовая.docx', 'Курсовая_Шегай_П_И.pdf')
